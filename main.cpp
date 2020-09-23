@@ -1,4 +1,7 @@
 #include <iostream>
+#include "user.cpp"
+#include <string.h>
+
 
 using namespace std;
 
@@ -10,13 +13,35 @@ void main(int argc, char *argv[])
     int port;
     if(argc != 5)
     {
-        cout<< "Numeros de argumentos errados"
+        cout<< "Numeros de argumentos errados" <<endl;
     }
     else
     {
         username = argv[1];
         group_name = argv[2];
         server_ip_address = argv[3];
-        port = argv[4];
+        port = stoi(argv[4]);
+    }
+    if(validation(username))
+    {
+        if(validation(group_name))
+        {
+            if(validation_port(port))
+            {
+                
+            }
+            else
+            {
+                cout << "invalid port"<< endl;
+            }
+        }
+        else
+        {
+            cout << "invalid groupname"<< endl;
+        }
+    }
+    else
+    {
+        cout<< "invalid username"<< endl;
     }
 }
