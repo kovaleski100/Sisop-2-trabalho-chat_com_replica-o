@@ -1,6 +1,7 @@
 #include <iostream>
 #include "user.cpp"
 #include <string.h>
+#include "Connection.cpp"
 
 
 using namespace std;
