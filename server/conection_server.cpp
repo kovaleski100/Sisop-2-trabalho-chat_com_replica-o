@@ -12,7 +12,6 @@
 
 using namespace std;
 
-void conection(string groupname, string server_ip, int PORT);
 int sever_tcp(string groupname, string server_ip, int PORT);
 
 int sever_tcp(string groupname, string server_ip, int PORT)
@@ -57,7 +56,3 @@ int sever_tcp(string groupname, string server_ip, int PORT)
 	return 0;
 }
 
-void conection(string groupname, string server_ip, int PORT)
-{
-
-}

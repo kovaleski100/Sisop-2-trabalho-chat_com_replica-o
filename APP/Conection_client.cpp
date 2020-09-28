@@ -12,7 +12,6 @@
 
 using namespace std;
 
-void open_connection(string user, string groupname, string server_ip, int port);
 void client_tcp(string user, string groupname, string server_ip, int port);
 
 
