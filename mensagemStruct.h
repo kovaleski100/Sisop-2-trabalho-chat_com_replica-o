@@ -3,14 +3,22 @@
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
-struct mensagem
+struct Mensagem
 {
     boost::uuids::uuid uuid;
-    int grupo;
+    std::string grupo;
     std::string usuario;
     std::string texto;
-    mensagem()
+    Mensagem()
     {
         uuid = boost::uuids::random_generator()();
+    }
+    Mensagem(std::string uuid, std::string grupo, std::string usuario, std::string texto)
+    {
+        boost::uuids::string_generator gen;
+        this->uuid = gen(uuid);
+        this->grupo = grupo;
+        this->usuario = usuario;
+        this->texto = texto;
     }
 };
