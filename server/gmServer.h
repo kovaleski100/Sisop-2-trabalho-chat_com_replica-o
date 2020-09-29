@@ -8,13 +8,21 @@
 
 using namespace std;
 
+//GMServer Gerenciador De Mensagens Do Server
+//sua função é gerenciar um conversa para um grupo, um gmserver por grupo.
+//uma copia da conversa é mantida em um arquivo para persistencia e outra no vetor conversa para rapido acesso
+//a consistencia entre as duas é garantida.
+//possui uma função para escrever uma mensagem na conversa e outra para ler as ultimas N mensagens,
+//mutex com locks para readers e writers.
+//Ao ser criado, caso já exista o arquivo do grupo, reconstroi a conversa.
+//Guarda o arquivo do grupo em server/conversas/<nome_do_grupo>.txt
+//guarda em plain text para facilitar debugacao
+
 class GMServer
 {
 private:
   string grupo;
   string fileName;
-  //uma copia da conversa é mantida no arquivo para persistencia e outra no vetor conversa para rapido acesso
-  //a consistencia entre as duas é garantida.
   vector<Mensagem> conversa;
   mutable shared_timed_mutex mutex; //mutex for locking access to file and to vector conversa
 
@@ -47,7 +55,7 @@ public:
 vector<Mensagem> GMServer::ReadLastMessages(int n)
 {
   //shared lock for readers, lock until the end of the function
-  shared_lock<shared_timed_mutex> lock(mutex); 
+  shared_lock<shared_timed_mutex> lock(mutex);
   int size = conversa.size();
   n = min(n, size);
   vector<Mensagem> mensagens(conversa.end() - n, conversa.end());
@@ -93,7 +101,7 @@ Mensagem GMServer::lineToStruct(string line)
   return Mensagem(uuid, grupo, user, text);
 };
 
-  //buildConversa reconstroi a conversa a partir dos arquivo quando recomecando o server
+//buildConversa reconstroi a conversa a partir dos arquivo quando recomecando o server
 bool GMServer::buildConversa()
 {
   // does not need a mutex because it is on the constructor of the class
@@ -106,7 +114,7 @@ bool GMServer::buildConversa()
     {
       continue;
     }
-    
+
     conversa.push_back(lineToStruct(line));
   }
   f.close();
