@@ -2,6 +2,27 @@
 
 git Criado para a implementação do trabalho de sisop 2.
 
+# Requisitos
+
+boost:
+```
+sudo apt-get install libboost-all-dev
+```
+ncurses:
+```
+sudo apt-get install libncurses5-dev libncursesw5-dev
+```
+
+# Modo de uso
+
+```
+make
+./app <username> <groupname> <server_ip_address> <port>
+```
+
+
+
+
 ## end to end, mensagem sentido cliente -> servidor
 
 ### Interface

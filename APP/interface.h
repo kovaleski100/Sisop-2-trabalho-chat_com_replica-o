@@ -26,7 +26,7 @@ private:
 
 public:
     Interface(GMClient *gmc_, string user_);
-
+    void Start();
     void DisplayText(string text);
 
 };

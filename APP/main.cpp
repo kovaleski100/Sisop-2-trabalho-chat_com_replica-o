@@ -1,48 +1,48 @@
 #include <iostream>
-#include "user.cpp"
-#include <string.h>
-#include "Connection.cpp"
-
+#include <string>
+#include "validation.h"
+#include "gmClient.h"
 
 using namespace std;
 
-void main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
-    string username;
-    string group_name;
-    string server_ip_address;
-    int port;
-    if(argc != 5)
+    if (argc != 5)
     {
-        cout<< "Numeros de argumentos errados" <<endl;
+        // numero de parametros errados
+        cout << "./app <username> <groupname> <server_ip_address> <port>" << endl;
+        return 1;
     }
-    else
+
+    string username = argv[1];
+    string group_name = argv[2];
+    string server_ip_address = argv[3];
+    int port;
+    try
     {
-        username = argv[1];
-        group_name = argv[2];
-        server_ip_address = argv[3];
         port = stoi(argv[4]);
     }
-    if(validation(username))
+    catch (const std::exception &e)
     {
-        if(validation(group_name))
-        {
-            if(validation_port(port))
-            {
-                
-            }
-            else
-            {
-                cout << "invalid port"<< endl;
-            }
-        }
-        else
-        {
-            cout << "invalid groupname"<< endl;
-        }
+        std::cerr << "port precisa ser um número!" << '\n';
+        return 1;
     }
-    else
+
+    string err = Validation::ValidateInputs(username, group_name, server_ip_address, port);
+    if (err != "")
     {
-        cout<< "invalid username"<< endl;
+        // Um ou mais parametros estão errados
+        cout << err << endl;
+        return 1;
     }
+
+    // Validacao terminou, começa o app
+
+    GMClient *gmc = new GMClient(username, group_name);
+    Interface *inte = new Interface(gmc, username);
+
+    inte->Start();
+
+    delete gmc;
+    delete inte;
 }

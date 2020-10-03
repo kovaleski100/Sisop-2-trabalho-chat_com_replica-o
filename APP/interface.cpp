@@ -7,6 +7,10 @@ Interface::Interface(GMClient *gmc_, string user_)
     gmc = gmc_;
     user = user_;
     gmc->setInterface(this);
+};
+
+void Interface::Start()
+{
     createWindows();
     while (getInput())
     {
@@ -14,7 +18,7 @@ Interface::Interface(GMClient *gmc_, string user_)
     }
 
     endwin();
-};
+}
 
 void Interface::createWindows()
 {
