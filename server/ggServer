@@ -1,5 +1,4 @@
 #include "gmServer.h"
-#define N 1
 #include <map>
 
 using namespace std;
