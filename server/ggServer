@@ -1,4 +1,5 @@
-#include "GM.h"
+#include "gmServer.h"
+#define N 1
 #include <map>
 
 using namespace std;
@@ -9,11 +10,15 @@ class Group_M{
 	public:
 	vector<Mensagem> ReadMessage(string group);
 	void WriteMessage(Mensagem mensagem);
+	
+	Group_M(){
+	
+	
+	}
 };
 
 vector<Mensagem>  Group_M::ReadMessage(string group){
 	map<string,GMServer*>::iterator it;
-	vector<Mensagem> teste;
 	it = GM_map.find(group);
 	
 	if(it == GM_map.end()){
@@ -22,13 +27,11 @@ vector<Mensagem>  Group_M::ReadMessage(string group){
 		it = GM_map.find(group);
 	}
 
-	teste = it->second->ReadLastMessages(N);
-	return teste;
+	return it->second->ReadLastMessages(N);
 }
 
 void Group_M::WriteMessage(Mensagem mensagem){
 	map<string,GMServer*>::iterator it;
-	vector<Mensagem> teste;
 	it = GM_map.find(mensagem.grupo);
 	
 	if(it == GM_map.end()){
