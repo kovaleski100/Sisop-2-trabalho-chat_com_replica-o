@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 
     // Validacao terminou, começa o app
 
-    GMClient *gmc = new GMClient(username, group_name);
+    GMClient *gmc = new GMClient(username, group_name,port,server_ip_address);
     Interface *inte = new Interface(gmc, username);
 
     inte->Start();

@@ -1,5 +1,12 @@
 #include "gmClient.h"
 
+void serialize_data(Mensagem* m1,char *data){
+    
+}
+void deserialize_data(char *data,Mensagem* m1){
+    data = 0;
+};
+
 Mensagem GMClient::buildMensagem(string text)
 {
     Mensagem m1;
@@ -14,6 +21,9 @@ Mensagem GMClient::buildMensagem(string text)
 bool GMClient::SendMessage(string text)
 {
     Mensagem m1 = buildMensagem(text);
+    char data[sizeof(Mensagem)];
+    serialize_data(&m1,data);
+    client_tcp(data, server_ip,port);
 
     // Chama uma função do GCClient chamada algo assim,
     // essa função do GCClient vai mandar pro server.

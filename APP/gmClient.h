@@ -5,14 +5,20 @@
 #include <iostream>
 #include "../mensagemStruct.h"
 #include "interface.h"
+#include "Connection_client.cpp"
 
 using namespace std;
+
+
 
 class GMClient
 {
 private:
     string user;
     string group;
+    string server_ip;
+    int port;
+    
     // Um ponteiro pra uma instancia do GCClient
     // Vai ser usado pra chamar a funcao pra enviar uma mensagem pro server.
     //GCClient * gcClient;
@@ -22,10 +28,12 @@ private:
     Mensagem buildMensagem(string text);
 
 public:
-    GMClient(string user_, string group_)
+    GMClient(string user_, string group_, int port_, string server_ip_)
     {
         user = user_;
         group = group_;
+        port = port_;
+        server_ip = server_ip_;
     };
 
     bool SendMessage(string text);
@@ -39,5 +47,8 @@ public:
         interface = interface_;
     }
 };
+
+void serialize_data(Mensagem* m1,char *data);
+void deserialize_data(char* data, Mensagem* m1);
 
 #endif
