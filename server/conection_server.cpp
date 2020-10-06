@@ -9,13 +9,45 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
+#include "ggServer.h"
+#include "gmServer.h"
+#include "../mensagemStruct.h"
 
 using namespace std;
 
-int sever_tcp(string groupname, string server_ip, int PORT);
-
-int sever_tcp(string groupname, string server_ip, int PORT)
+struct dispositivo
 {
+	string username;
+	set<std::string> ip;
+}typedef dispositivo DISP;
+
+std::map<std::string, std::vector<dispositivo>> gruop
+
+void tolken(char* buffer)
+{
+    DISP device = NULL, temp = NULL;
+
+    ///"iṕ/usuario/grupo/texto"
+    string iṕ;
+    string groupname;
+    string text;
+
+    strcpy(ip,strtok(buffer, "/"));
+    strcpy(device->username,strtok(buffer, "/"));
+    strcpy(gruopname,strtok(buffer, "/"));
+    strcpy(text,strtok(buffer, "/"));
+
+
+    device->ip.add(ip)
+    grupo[gruopname] = device;
+
+}
+
+
+int create_socket(int port, Mensagem message)
+{
+	int keep_alive;
+	int new_message;
 	int sockfd, newsockfd, n;
 	socklen_t clilen;
 	char buffer[256];
@@ -32,27 +64,33 @@ int sever_tcp(string groupname, string server_ip, int PORT)
 	if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
 		printf("ERROR on binding");
 
-	listen(sockfd, 5);
+	while(1)
+	{
+        listen(sockfd, 5);
 
-	clilen = sizeof(struct sockaddr_in);
-	if ((newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen)) == -1)
-		printf("ERROR on accept");
+        clilen = sizeof(struct sockaddr_in);
 
-	bzero(buffer, 256);
+		if ((newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen)) == -1)
+			printf("ERROR on accept");
 
-	/* read from the socket */
-	n = read(newsockfd, buffer, 256);
-	if (n < 0)
-		printf("ERROR reading from socket");
-	printf("Here is the message: %s\n", buffer);
+		bzero(buffer, 256);
 
-	/* write in the socket */
-	n = write(newsockfd,"I got your message", 18);
-	if (n < 0)
-		printf("ERROR writing to socket");
+		/* read from the socket */
+		n = read(newsockfd, buffer, 256);
 
+		if(n < 0)
+			printf("ERROR reading from socket");
+		printf("Here is the message: %s\n", buffer);
+
+        tolken(buffer, group);
+
+		/* write in the socket */
+		if(new_message && keep_alive)
+			n = write(newsockfd,"I got your message", strlen());
+			if (n < 0)
+				printf("ERROR writing to socket");
+	}
 	close(newsockfd);
 	close(sockfd);
 	return 0;
 }
-
