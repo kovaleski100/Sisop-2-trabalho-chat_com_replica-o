@@ -5,6 +5,7 @@
 #include <mutex>
 #include <shared_mutex>
 #include "../mensagemStruct.h"
+#include "conection_server.cpp"
 
 using namespace std;
 
@@ -71,6 +72,7 @@ bool GMServer::WriteMessage(Mensagem mensagem)
   arquivoGrupo << mensagem.uuid << ";" << mensagem.grupo << ";" << mensagem.usuario << ";" << mensagem.texto << endl;
   conversa.push_back(mensagem);
   arquivoGrupo.close();
+
 }
 
 bool GMServer::fileExists()
