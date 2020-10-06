@@ -1,3 +1,8 @@
+/*
+
+
+
+
 #include <iostream>
 #include <stdio.h>
 #include <string.h>
@@ -9,9 +14,13 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
+*/
+
 #include "ggServer.h"
 #include "gmServer.h"
 #include "../mensagemStruct.h"
+
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -39,7 +48,6 @@ void tolken(char* buffer, int socket)
     strcpy(text,strtok(buffer, "/"));
 
 	device->socket = socket;
-
     device->ip.add(ip);
     grupo[gruopname] = device;
 
