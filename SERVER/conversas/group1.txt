@@ -1,0 +1,4 @@
+02f7fef9-daf0-41bb-b217-a0f8be8b24e0;group1;user1;ola
+94caefb0-8ba0-4b65-9c40-d1adfffd5c1f;group1;user2;tudo vem
+56acc461-7f71-454d-898d-cb9f8bdd99dd;group1;user2;dsasad
+0f3a68aa-43f7-4e03-9fd7-48fd102c2b13;group1;user2;ola

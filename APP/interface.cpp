@@ -12,7 +12,6 @@ Interface::Interface(GMClient *gmc_, string user_)
 void Interface::Start()
 {
     createWindows();
-    configure_keepalive(1,0.1,1,3);
     
     while (getInput())
     {
@@ -58,7 +57,7 @@ bool Interface::getInput()
     wprintw(inputWin, (user + ": ").c_str());
     wrefresh(inputWin);
     // Get the input
-    char str[150];
+    char str[256];
     wgetstr(inputWin, str);
     // Clear the input window to remove what the just sended
     wclear(inputWin);
