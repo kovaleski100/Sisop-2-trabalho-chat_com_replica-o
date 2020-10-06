@@ -6,6 +6,7 @@
 #include "../mensagemStruct.h"
 #include "interface.h"
 #include "Connection_client.cpp"
+#include <sys/socket.h>
 
 using namespace std;
 
@@ -48,7 +49,7 @@ public:
     }
 };
 
-void serialize_data(Mensagem* m1,char *data);
-void deserialize_data(char* data, Mensagem* m1);
+void serialize_data(Mensagem* m1,string data);
+void deserialize_data(string data, Mensagem* m1);
 
 #endif

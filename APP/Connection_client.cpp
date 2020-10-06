@@ -1,18 +1,6 @@
-#include <iostream>
-#include <stdio.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h>
+#include "Connection_client.h"
 
 using namespace std;
-
-void client_tcp(char* data,string server_ip, int port);
 
 
 
@@ -31,7 +19,7 @@ void open_connection(string user, string groupname, string server_ip, int port)
     
 }
 
-void client_tcp(char* data,string server_ip, int port)
+void client_tcp(string data,string server_ip, int port)
 {
     int sockfd, n;
     struct sockaddr_in serv_addr;
@@ -56,7 +44,7 @@ void client_tcp(char* data,string server_ip, int port)
 
 	serv_addr.sin_family = AF_INET;
 	serv_addr.sin_port = htons(port);
-	serv_addr.sin_addr = *((struct in_addr *)server->h_addr);
+	serv_addr.sin_addr.s_addr = inet_addr(server_ip.c_str()); //converte string com ip do servidor para o formato in_addr a ser passado para serv_addr
 	bzero(&(serv_addr.sin_zero), 8);
 
 
@@ -73,6 +61,7 @@ void client_tcp(char* data,string server_ip, int port)
 	n = write(sockfd, data, strlen(data));
     if (n < 0)
 		printf("ERROR writing to socket\n");
+        return;
     
     char buffer[256];
     bzero(buffer,256);
@@ -86,4 +75,68 @@ void client_tcp(char* data,string server_ip, int port)
 
 	close(sockfd);
 }
+
+
+
+
+
+
+void configure_keepalive(int switch_ka,float idle,int interval,int count){
+    /*
+     int switch_ka = 1;	// 1=KeepAlive On, 0=KeepAlive Off. //
+        float idle = 0.1;	// Number of idle seconds before sending a KeepAlive probe. //
+        int interval = 1;	// How often in seconds to resend an unacked KeepAlive probe. //
+        int count = 3;	// How many times to resend a KA probe if previous probe was unacked. //
+     
+     */
+    
+    
+    
+    if (setsockopt(socket_ka, SOL_SOCKET, SO_KEEPALIVE, &switch_ka, sizeof(switch_ka)) < 0)
+    {
+        /* Error occurred, so output an error message containing:
+        __LINE__, socket, SO_KEEPALIVE, switch_ka, errno, etc. */
+    }
+
+    if (switch_ka)
+    {
+        /* Set the number of seconds the connection must be idle before sending a KA probe. */
+        if (setsockopt(socket_ka, IPPROTO_TCP, TCP_KEEPIDLE, &idle, sizeof(idle)) < 0)
+        {
+        /* Error occurred, so output an error message containing:
+        __LINE__, socket_ka, TCP_KEEPIDLE, idle, errno, etc. */
+        }
+
+        /* Set how often in seconds to resend an unacked KA probe. */
+        if (setsockopt(socket_ka, IPPROTO_TCP, TCP_KEEPINTVL, &interval, sizeof(interval)) < 0)
+        {
+        /* Error occurred, so output an error message containing:
+        __LINE__, socket_ka, TCP_KEEPINTVL, interval, errno, etc. */
+        }
+
+        /* Set how many times to resend a KA probe if previous probe was unacked. */
+        if (setsockopt(socket_ka, IPPROTO_TCP, TCP_KEEPCNT, &count, sizeof(count)) < 0)
+        {
+        /* Error occurred, so output an error message containing:
+        __LINE__, socket_ka, TCP_KEEPCNT, count, errno, etc. */
+        }
+    }
+}
+
+string get_local_ip(){
+    struct sockaddr_in local_addr;
+    socklen_t addrlen = sizeof(local_addr);
+    char myIP[16] = {0};
+    
+    bzero(&local_addr, sizeof(local_addr));
+	int len = sizeof(local_addr);
+	getsockname(socket_ka, (struct sockaddr *) &local_addr, &addrlen);
+	inet_ntop(AF_INET, &local_addr.sin_addr, myIP, sizeof(myIP));
+    
+    string temp;
+    temp.append(myIP);
+    return temp;
+    
+}
+
 

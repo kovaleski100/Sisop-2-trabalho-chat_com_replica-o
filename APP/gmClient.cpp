@@ -1,11 +1,24 @@
 #include "gmClient.h"
 
-void serialize_data(Mensagem* m1,char *data){
+
+void serialize_data(Mensagem* m1,string data){
+    
+    string local_ip = get_local_ip();
+    data.append(local_ip);
+    data.append("/");
+    data.append(m1->usuario);
+    data.append("/");
+    data.append(m1->grupo);
+    data.append("/");
+    data.append(m1->texto);
+    data.append("/");
+    
     
 }
-void deserialize_data(char *data,Mensagem* m1){
-    data = 0;
-};
+void deserialize_data(string data,Mensagem* m1){
+    return;
+    
+}
 
 Mensagem GMClient::buildMensagem(string text)
 {
@@ -21,7 +34,7 @@ Mensagem GMClient::buildMensagem(string text)
 bool GMClient::SendMessage(string text)
 {
     Mensagem m1 = buildMensagem(text);
-    char data[sizeof(Mensagem)];
+    string data;
     serialize_data(&m1,data);
     client_tcp(data, server_ip,port);
 

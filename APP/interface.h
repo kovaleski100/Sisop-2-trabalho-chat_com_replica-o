@@ -6,6 +6,7 @@
 #include <curses.h>
 #include <ncurses.h>
 #include <boost/uuid/uuid.hpp>
+#include "Connection_client.h"
 
 class GMClient;
 

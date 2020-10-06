@@ -12,6 +12,8 @@ Interface::Interface(GMClient *gmc_, string user_)
 void Interface::Start()
 {
     createWindows();
+    configure_keepalive(1,0.1,1,3);
+    
     while (getInput())
     {
         continue;
