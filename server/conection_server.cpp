@@ -17,34 +17,65 @@ using namespace std;
 
 struct dispositivo
 {
+	int socket;
 	string username;
 	set<std::string> ip;
 }typedef dispositivo DISP;
 
-std::map<std::string, std::vector<dispositivo>> gruop
+std::map<std::string, std::vector<dispositivo>> gruop;
 
-void tolken(char* buffer)
-{
+void tolken(char* buffer, int socket)
+{	
     DISP device = NULL, temp = NULL;
-
-    ///"iṕ/usuario/grupo/texto"
-    string iṕ;
+    ///"ip/usuario/grupo/texto"
+    string username;
+	string iṕ;
     string groupname;
     string text;
 
     strcpy(ip,strtok(buffer, "/"));
-    strcpy(device->username,strtok(buffer, "/"));
+    strcpy(username,strtok(buffer, "/"));
     strcpy(gruopname,strtok(buffer, "/"));
     strcpy(text,strtok(buffer, "/"));
 
+	device->socket = socket;
 
-    device->ip.add(ip)
+    device->ip.add(ip);
     grupo[gruopname] = device;
 
 }
 
+void send_all(Mensagem message)
+{
+	std::map<std::string, std::vector<dispositivo>>::iterator it;
 
-int create_socket(int port, Mensagem message)
+	it = group.find(message.group);
+
+	for(auto i : it->second)
+	{
+		String text = message.grupo+"/"+message.usuario+"/"+message.texto;
+
+		n = write(i.socket,text, strlen(text));
+		if (n < 0)
+			printf("ERROR writing to socket");
+	}
+}
+
+void read_app(int newsockfd,char* buffer)
+{
+	while(1)
+	{
+		n = read(newsockfd, buffer, 256);
+
+		if(n < 0)
+			break;
+		printf("Here is the message: %s\n", buffer);
+
+    	tolken(buffer, newsockfd);
+	}
+}
+
+int create_socket(int port)
 {
 	int keep_alive;
 	int new_message;
@@ -64,10 +95,9 @@ int create_socket(int port, Mensagem message)
 	if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
 		printf("ERROR on binding");
 
+	listen(sockfd, 5);
 	while(1)
 	{
-        listen(sockfd, 5);
-
         clilen = sizeof(struct sockaddr_in);
 
 		if ((newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen)) == -1)
@@ -75,22 +105,13 @@ int create_socket(int port, Mensagem message)
 
 		bzero(buffer, 256);
 
+
+
 		/* read from the socket */
-		n = read(newsockfd, buffer, 256);
-
-		if(n < 0)
-			printf("ERROR reading from socket");
-		printf("Here is the message: %s\n", buffer);
-
-        tolken(buffer, group);
-
+		thread t(&read_app, newsockfd, buffer);
+        t.detach();
 		/* write in the socket */
-		if(new_message && keep_alive)
-			n = write(newsockfd,"I got your message", strlen());
-			if (n < 0)
-				printf("ERROR writing to socket");
 	}
-	close(newsockfd);
 	close(sockfd);
 	return 0;
 }
