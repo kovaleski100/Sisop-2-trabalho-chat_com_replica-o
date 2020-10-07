@@ -12,7 +12,8 @@ Interface::Interface(GMClient *gmc_, string user_)
 void Interface::Start()
 {
     createWindows();
-    
+    thread t(&GMClient::SendMessage, gmc, "<entrou no grupo>");
+    t.detach();
     while (getInput())
     {
         continue;
