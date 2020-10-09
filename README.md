@@ -17,6 +17,7 @@ sudo apt-get install libncurses5-dev libncursesw5-dev
 
 ```
 make
+./server <port>
 ./app <username> <groupname> <server_ip_address> <port>
 ```
 

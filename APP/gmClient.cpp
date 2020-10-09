@@ -1,23 +1,11 @@
 #include "gmClient.h"
 
-
-void serialize_data(Mensagem* m1,string data){
-    
-    string local_ip = get_local_ip();
-    data.append(local_ip);
-    data.append("/");
-    data.append(m1->usuario);
-    data.append("/");
-    data.append(m1->grupo);
-    data.append("/");
-    data.append(m1->texto);
-    data.append("/");
-    
-    
-}
-void deserialize_data(string data,Mensagem* m1){
-    return;
-    
+GMClient::GMClient(GCClient *gcClient_, string user_, string group_)
+{
+    user = user_;
+    group = group_;
+    gcClient = gcClient_;
+    gcClient_->Set_gmc(this);
 }
 
 Mensagem GMClient::buildMensagem(string text)
@@ -35,13 +23,10 @@ bool GMClient::SendMessage(string text)
 {
     Mensagem m1 = buildMensagem(text);
     string data;
-    serialize_data(&m1,data);
-    client_tcp(data, server_ip,port);
 
     // Chama uma função do GCClient chamada algo assim,
     // essa função do GCClient vai mandar pro server.
-    // duvida: essa função do GCClient precisa lançar uma thread pra mandar pro server?
-    //gcClient->SendMessage(m1);
+    gcClient->Send_server(m1);
 }
 
 bool GMClient::DisplayMessage(Mensagem message)

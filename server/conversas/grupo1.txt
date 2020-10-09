@@ -1,4 +1,0 @@
-83e348f8-e020-4c03-ba7b-854a70631639;grupo1;user1;hellooo
-048cb994-c2d6-4a5e-91c9-a565259cbf71;grupo1;user2;hellooo
-a4c1d950-1a2d-407a-9e4b-a586f6992815;grupo1;user3;hellooo
-918b214f-2d3b-430c-9d7d-b3ba9ff5d921;grupo1;user4;hellooo

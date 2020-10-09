@@ -3,39 +3,27 @@
 #define GMCLIENT_H
 #include <string>
 #include <iostream>
-#include "../mensagemStruct.h"
 #include "interface.h"
-#include "Connection_client.cpp"
-#include <sys/socket.h>
+#include "GCClient.h"
+
+class GCClient;
 
 using namespace std;
-
-
 
 class GMClient
 {
 private:
     string user;
     string group;
-    string server_ip;
-    int port;
-    
     // Um ponteiro pra uma instancia do GCClient
     // Vai ser usado pra chamar a funcao pra enviar uma mensagem pro server.
-    //GCClient * gcClient;
-
+    GCClient *gcClient;
     Interface *interface;
 
     Mensagem buildMensagem(string text);
 
 public:
-    GMClient(string user_, string group_, int port_, string server_ip_)
-    {
-        user = user_;
-        group = group_;
-        port = port_;
-        server_ip = server_ip_;
-    };
+    GMClient(GCClient *gcClient_, string user_, string group_);
 
     bool SendMessage(string text);
     // essa função DisplayMessage vai ser chamada pelo GCClient
@@ -48,8 +36,5 @@ public:
         interface = interface_;
     }
 };
-
-void serialize_data(Mensagem* m1,string data);
-void deserialize_data(string data, Mensagem* m1);
 
 #endif

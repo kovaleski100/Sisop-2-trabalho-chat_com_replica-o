@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include "validation.h"
-#include "gmClient.h"
+#include "GCClient.h"
 
 using namespace std;
 
@@ -38,11 +38,15 @@ int main(int argc, char *argv[])
 
     // Validacao terminou, começa o app
 
-    GMClient *gmc = new GMClient(username, group_name,port,server_ip_address);
+    // Instancia componentes
+    GCClient *gcc = new GCClient(server_ip_address, port, username, group_name);
+    GMClient *gmc = new GMClient(gcc, username, group_name);
     Interface *inte = new Interface(gmc, username);
 
+    //roda o app
     inte->Start();
 
-    delete gmc;
     delete inte;
+    delete gmc;
+    delete gcc;
 }
