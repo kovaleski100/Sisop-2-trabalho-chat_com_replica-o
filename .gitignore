@@ -3,3 +3,16 @@
 # codeblock
 *.cbp
 *.layout
+#visual studio
+*.VS.*
+.vs/Sisop-2-trabalho-1/v16/Browse.VC.opendb
+
+.vs/ProjectSettings.json
+
+.vs/Sisop-2-trabalho-1/v16/Browse.VC.db
+
+.vs/Sisop-2-trabalho-1/v16/Browse.VC.db-shm
+
+.vs/Sisop-2-trabalho-1/v16/Browse.VC.db-wal
+
+.vs/slnx.sqlite
