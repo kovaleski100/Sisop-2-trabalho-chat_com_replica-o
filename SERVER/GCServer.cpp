@@ -3,6 +3,7 @@
 
 GCServer::GCServer(GGServer *ggs_, int port)
 {
+	main_replica = true;
 	ggs = ggs_;
 	ggs_->set_GCS(this);
 	int socket = create_socket(port);
@@ -36,6 +37,12 @@ Mensagem GCServer::build_Mensagem(char *buffer)
 
 void GCServer::Send_all(Mensagem message)
 {
+
+	// if(!main_replica) return;
+
+
+	//Send_all_backup(message);
+
 	std::map<std::string, std::vector<Dispositivo>>::iterator it;
 
 	it = group_map.find(message.grupo);
@@ -55,7 +62,8 @@ void GCServer::listen_app(int newsockfd)
 	// register app
 	char buffer[256];
 	n = read(newsockfd, buffer, 256);
-	if (n <= 0){
+	if (n <= 0)
+	{
 		cout << "ERROR registrando app";
 		return;
 	}
@@ -115,8 +123,87 @@ void GCServer::handle_new_conections(int sockfd)
 			printf("ERROR on accept");
 
 		/* read from the socket */
+		// registrar app ou backup
+
 		thread t(&GCServer::listen_app, this, newsockfd);
 		t.detach();
 	}
 	close(sockfd);
+}
+
+// Backup replica ----------------
+
+GCServer::GCServer(GGServer *ggs_, int port, int main_port)
+{
+	main_replica = false;
+	ggs = ggs_;
+	ggs_->set_GCS(this);
+	int socket = create_socket(port);
+	thread t(&GCServer::handle_new_conections, this, socket);
+	t.detach();
+	connect_to_main_server("127.0.0.1", main_port);
+	register_itself(port);
+	thread t2(&GCServer::listen_main_server, this);
+	t2.detach();
+}
+
+void GCServer::connect_to_main_server(string server_adress, int port)
+{
+	int sockfd;
+	struct sockaddr_in serv_addr;
+	struct hostent *server;
+
+	server = gethostbyname(server_adress.c_str());
+	if (server == NULL)
+	{
+		fprintf(stderr, "ERROR, no such host\n");
+		exit(0);
+	}
+
+	if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
+	{
+		printf("ERROR opening socket\n");
+		return;
+	}
+
+	bzero((char *)&serv_addr, sizeof(serv_addr));
+	serv_addr.sin_family = AF_INET;
+	bcopy((char *)server->h_addr,
+		  (char *)&serv_addr.sin_addr.s_addr,
+		  server->h_length);
+	serv_addr.sin_port = htons(port);
+
+	bzero(&(serv_addr.sin_zero), 8);
+
+	if (connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
+	{
+		printf("ERROR connecting\n");
+		return;
+	}
+
+	main_socket = sockfd;
+}
+
+void GCServer::listen_main_server()
+{
+	int n;
+	char buffer[256];
+	while (1)
+	{
+		n = read(main_socket, buffer, 256);
+		if (n <= 0)
+			break;
+
+		//check if message or new backup
+
+		Mensagem m1 = build_Mensagem(buffer);
+		ggs->WriteMessage(m1);
+		bzero(buffer, 256);
+	}
+	//eleicao()
+	close(main_socket);
+}
+
+void GCServer::register_itself(int port){
+	//send_main_server()
 }
