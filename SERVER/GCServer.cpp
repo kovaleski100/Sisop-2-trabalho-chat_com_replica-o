@@ -4,6 +4,7 @@
 GCServer::GCServer(GGServer *ggs_, int port)
 {
 	main_replica = true;
+	self_port = port;
 	Replica_name = "replica_" + to_string(port);
 	ggs = ggs_;
 	ggs_->set_GCS(this);
@@ -65,7 +66,8 @@ void GCServer::register_new_backup(int socket, int port)
 	new_backup.socket = socket;
 	new_backup.port = port;
 	backup_vector.push_back(new_backup);
-	if (backup_vector.size() == 1) return;
+	if (backup_vector.size() == 1)
+		return;
 
 	string text;
 	// send new next to the previous last on the list
@@ -116,13 +118,49 @@ void GCServer::register_new_connection(int newsocket)
 	}
 	else if (type == "backup")
 	{
-		//backup/port
+		// backup/port
 		string backup_port = buff;
 		register_new_backup(newsocket, stoi(backup_port));
+	}
+	else if (type == "election")
+	{
+		// election/id
+		string id = buff;
+		handle_election(stoi(id));
+		close(newsocket);
+	}
+	else if (type == "elected")
+	{
+		// elected/port
+		if (main_replica)
+			return;
+
+		cout << "Novo lider eleito! Repassando as boas novas!" << endl;
+		string new_main_port = buff;
+
+		int sock = connect_to_port("127.0.0.1", next_port_ring_election);
+		if (sock == -1)
+			return;
+		string text = "elected/" + new_main_port;
+		int n = write(sock, text.c_str(), strlen(text.c_str()));
+		if (n <= 0)
+			printf("ERROR writing to socket backup on election repassing elected");
+		close(sock);
+		participant = false;
+
+		cout << "Conectando com novo lider!" << endl;
+		sock = connect_to_port("127.0.0.1", stoi(new_main_port));
+		if (sock == -1)
+			return;
+		main_socket = sock;
+		register_itself(self_port);
+		thread t2(&GCServer::listen_main_server, this);
+		t2.detach();
 	}
 	else
 	{
 		cout << "error registering new connection: type not foud!" << endl;
+		close(newsocket);
 	}
 }
 
@@ -208,15 +246,20 @@ GCServer::GCServer(GGServer *ggs_, int port, int main_port)
 	ggs_->set_GCS(this);
 	int socket = create_socket(port);
 	thread t1(&GCServer::handle_new_conections, this, socket);
-	connect_to_main_server("127.0.0.1", main_port);
+	int sock = connect_to_port("127.0.0.1", main_port);
+	if (sock == -1)
+		return;
+	main_socket = sock;
 	register_itself(port);
 	thread t2(&GCServer::listen_main_server, this);
+	election_id = port;
+	self_port = port;
 
 	t1.join();
 	t2.join();
 }
 
-void GCServer::connect_to_main_server(string server_adress, int port)
+int GCServer::connect_to_port(string server_adress, int port)
 {
 	int sockfd;
 	struct sockaddr_in serv_addr;
@@ -232,7 +275,7 @@ void GCServer::connect_to_main_server(string server_adress, int port)
 	if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
 	{
 		printf("ERROR opening socket\n");
-		return;
+		return -1;
 	}
 
 	bzero((char *)&serv_addr, sizeof(serv_addr));
@@ -247,10 +290,9 @@ void GCServer::connect_to_main_server(string server_adress, int port)
 	if (connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
 	{
 		printf("ERROR connecting\n");
-		return;
+		return -1;
 	}
-
-	main_socket = sockfd;
+	return sockfd;
 }
 
 void GCServer::listen_main_server()
@@ -286,8 +328,8 @@ void GCServer::listen_main_server()
 			cout << "Mensagem recebida - backup" << endl;
 			Mensagem m1 = build_Mensagem(buffer);
 			ggs->WriteMessage(m1);
-			bzero(buffer, 256);
 		}
+		bzero(buffer, 256);
 	}
 	close(main_socket);
 	start_election();
@@ -320,6 +362,75 @@ void GCServer::backup_register_app(string app_info)
 	group_map[group].push_back(device);
 }
 
-void GCServer::start_election(){
-	cout << "Comecou a eleicao!" << endl;
+void GCServer::start_election()
+{
+	unique_lock<shared_timed_mutex> lock(election_mutex);
+	if (participant == true)
+	{
+		// ja participei
+		return;
+	}
+
+	cout << "Iniciei a eleicao!" << endl;
+	participant = true;
+	int sock = connect_to_port("127.0.0.1", next_port_ring_election);
+	if (sock == -1)
+		return;
+	string text = "election/" + to_string(election_id);
+	int n = write(sock, text.c_str(), strlen(text.c_str()));
+	if (n <= 0)
+		printf("ERROR writing to socket backup on election");
+	close(sock);
+}
+
+void GCServer::handle_election(int id_previous)
+{
+	unique_lock<shared_timed_mutex> lock(election_mutex);
+
+	if (id_previous > election_id)
+	{
+		// repassa o id do anterior
+		cout << "Repassando o id anterior" << endl;
+		int sock = connect_to_port("127.0.0.1", next_port_ring_election);
+		if (sock == -1)
+			return;
+		string text = "election/" + to_string(id_previous);
+		int n = write(sock, text.c_str(), strlen(text.c_str()));
+		if (n <= 0)
+			printf("ERROR writing to socket backup on election repassing previous id");
+		close(sock);
+		participant = true;
+	}
+	else if (id_previous < election_id)
+	{
+		if (participant == false)
+		{
+			// repassando o meu id
+			cout << "Repassando o meu id" << endl;
+			int sock = connect_to_port("127.0.0.1", next_port_ring_election);
+			if (sock == -1)
+				return;
+			string text = "election/" + to_string(election_id);
+			int n = write(sock, text.c_str(), strlen(text.c_str()));
+			if (n <= 0)
+				printf("ERROR writing to socket backup on election repassing my id");
+			close(sock);
+			participant = true;
+		}
+	}
+	else
+	{
+		// Recebi meu id, fui eleito
+		// mando um "elected" com minha porta
+		cout << "Fui eleito!" << endl;
+		main_replica = true;
+		int sock = connect_to_port("127.0.0.1", next_port_ring_election);
+		if (sock == -1)
+			return;
+		string text = "elected/" + to_string(self_port);
+		int n = write(sock, text.c_str(), strlen(text.c_str()));
+		if (n <= 0)
+			printf("ERROR writing to socket backup on election repassing my id");
+		close(sock);
+	}
 }

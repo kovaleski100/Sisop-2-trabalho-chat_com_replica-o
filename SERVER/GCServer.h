@@ -12,6 +12,7 @@
 #include <map>
 #include <vector>
 #include "../mensagemStruct.h"
+#include <shared_mutex>
 
 class GGServer;
 
@@ -35,6 +36,7 @@ private:
 	std::map<std::string, std::vector<Dispositivo>> group_map;
 	GGServer *ggs;
 	int main_socket;
+	int self_port;
 	std::vector<Backup> backup_vector;
 	bool main_replica;
 	Mensagem build_Mensagem(char *buffer);
@@ -45,12 +47,16 @@ private:
 	void register_new_backup(int socket, int port);
 	void send_all_backups(string text);
 	//backup ------
-	void connect_to_main_server(string server_adress, int port);
+	int connect_to_port(string server_adress, int port);
 	void listen_main_server();
 	void register_itself(int port);	
 	void backup_register_app(string app_info);
 	int next_port_ring_election;
 	void start_election();
+	bool participant;
+	int election_id;
+	void handle_election(int id_previous);
+	mutable shared_timed_mutex election_mutex;
 
 public:
 	GCServer(GGServer *ggs_, int port);
