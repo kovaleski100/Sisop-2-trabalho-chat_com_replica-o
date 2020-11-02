@@ -52,11 +52,13 @@ void GCClient::connect_server(string server_adress, int port)
 }
 
 void GCClient::register_itself(string user, string group){
-    Mensagem m1;
-    m1.grupo = group;
-    m1.usuario = user;
-    m1.texto = "register dummy text";
-    Send_server(m1);
+    string texto = "app/" + group + "/" + user;
+    /* write in the socket */
+    const char *buff = texto.c_str();
+    int size = strlen(buff);
+    int n = write(server_socket, buff, size);
+    if (n <= 0)
+        printf("ERROR writing to socket\n");
 }
 
 

@@ -5,6 +5,8 @@
 #include "GCServer.h"
 #include <shared_mutex>
 #include <map>
+#include <sys/stat.h>
+#include <unistd.h>
 
 #define N 5
 
@@ -24,6 +26,12 @@ class GGServer{
 
 	void set_GCS(GCServer* GCS_){
 		GCS = GCS_;
+		struct stat st = {0};
+    	string replica_folder = "./SERVER/conversas/" + GCS->Replica_name;
+		
+		if (stat(replica_folder.c_str(), &st) == -1) {
+    		mkdir(replica_folder.c_str(), 0700);
+		}
 	}
 	
 	GGServer(){};

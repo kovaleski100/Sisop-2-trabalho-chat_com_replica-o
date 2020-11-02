@@ -17,7 +17,12 @@ sudo apt-get install libncurses5-dev libncursesw5-dev
 
 ```
 make
+
+Para a replica primaria:
 ./server <port>
+Para as reaplicas de backup:
+./server <port> <main_port>
+
 ./app <username> <groupname> <server_ip_address> <port>
 ```
 

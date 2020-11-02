@@ -28,6 +28,7 @@ private:
 	std::map<std::string, std::vector<Dispositivo>> group_map;
 	GGServer *ggs;
 	int main_socket;
+	std::map<int, int> backup_map;
 	bool main_replica;
 	Mensagem build_Mensagem(char *buffer);
 	void listen_app(int newsockfd);
@@ -36,12 +37,15 @@ private:
 	void connect_to_main_server(string server_adress, int port);
 	void listen_main_server();
 	void register_itself(int port);
+	void register_new_connection(int newsocket);
+	void send_all_backups(Mensagem message);
 
 public:
 	GCServer(GGServer *ggs_, int port);
 	GCServer(GGServer *ggs_, int port, int main_port);
 	~GCServer();
 	void Send_all(Mensagem message);
+	string Replica_name;
 };
 
 #endif

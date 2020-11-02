@@ -4,7 +4,7 @@ GMServer::GMServer(GCServer *GCS_, string nomeGrupo)
 {
     GCS = GCS_;
     grupo = nomeGrupo;
-    fileName = "./SERVER/conversas/" + nomeGrupo + ".txt";
+    fileName = "./SERVER/conversas/" + GCS->Replica_name + "/" + nomeGrupo + ".txt";
     if (fileExists())
     {
         buildConversa();

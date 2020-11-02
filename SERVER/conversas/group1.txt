@@ -9,3 +9,33 @@
 9c39e6d1-d85e-4899-913d-03a8c2a7186c;group1;user1;tudo bem?
 01574c5f-8ca9-4eb5-a6ae-89c9e153327c;group1;user1;como vai?
 9f3f2634-4f3e-48ba-9bee-81059e61984d;group1;user2;dale 
+b62de9c7-fb74-4962-a980-150ed186b59b;group1;user1;<entrou no grupo>
+790f7e8a-bf32-4dcd-a96c-dea19d3f1b37;group1;user2;<entrou no grupo>
+c3854416-2949-4789-b40c-704ebdd61882;group1;user2;ola
+e3afae62-1f3b-4d5b-a8d0-13eef4dab0e3;group1;user1;tudo bem
+5b9abae8-5e46-46ae-8056-cf4b26768665;group1;user3;<entrou no grupo>
+2898043b-08d7-4449-92c9-902564296aa4;group1;user3;ola
+907cf6b1-f1d8-44f4-85a5-e925a43f7581;group1;user2;dale
+21fb0f99-6199-490c-bcd1-a6ae8f8f3369;group1;user1;ola
+0c9c5671-af1b-48b4-b27f-2239b5f97c66;group1;user3;ola
+10697e41-9726-4368-9afa-641f636d15fa;group1;user1;<entrou no grupo>
+a0aae71b-a00b-445c-a632-7fbaaebdcd52;group1;user2;<entrou no grupo>
+912d2aff-1701-4366-a887-26844cfa1f22;group1;user1;eae user 2
+16c5cc99-ecf5-41c6-829c-2662d935c58b;group1;user2;eae cara
+1641a1e6-2812-4ee2-b6a6-699ce4d6da4c;group1;user2;tudo bem?
+e92ec26b-e03e-493e-a54b-b94bca44a8cb;group1;user1;tudo
+484feb8e-3bff-4653-8419-659ebdb0a836;group1;user3;<entrou no grupo>
+f95833df-f862-4502-ade0-1b33a4f11e73;group1;user3;alooooo
+7f728bcf-0c50-4f83-a06d-be6dc4aa1b02;group1;user1;<entrou no grupo>
+7d6b85c0-f1a1-4a51-8e62-2142fbc92c1c;group1;user1;ola
+c4a6975b-b0d1-4ddd-a924-e00317833159;group1;user1;alo
+eafe2ef7-b830-47c1-91c5-9a674ffafba0;group1;user1;<entrou no grupo>
+339c1c4b-5a28-4c92-8fee-26a218a1b6e8;group1;user2;<entrou no grupo>
+4bfd2dc3-aeb9-4446-9b5e-1476c91ec613;group1;user2;ola
+88cb4c34-bd5a-4cd3-b7e7-dba0407fdaed;group1;user2;tudo bem
+e422c5dc-fa0e-43ef-bc5c-a9af0f0498c4;group1;user1;eae
+5ab5e2d1-5cf7-4b4e-9a95-3afd55845218;group1;user2;<entrou no grupo>
+1790c562-d0d2-4812-b72b-b37e62cd8a9a;group1;user2;ola
+4c7f3dec-602c-4b4a-a652-32f356bc9123;group1;user2;ola
+e04ef535-60a5-47d4-889c-e2e06e254628;group1;user2;eae
+8467b9bc-9e1c-4778-b7a1-4a2a5f850a91;group1;user2;td bem

@@ -4,6 +4,7 @@
 GCServer::GCServer(GGServer *ggs_, int port)
 {
 	main_replica = true;
+	Replica_name = "replica_" + to_string(port);
 	ggs = ggs_;
 	ggs_->set_GCS(this);
 	int socket = create_socket(port);
@@ -38,10 +39,9 @@ Mensagem GCServer::build_Mensagem(char *buffer)
 void GCServer::Send_all(Mensagem message)
 {
 
-	// if(!main_replica) return;
+	if(!main_replica) return;
 
-
-	//Send_all_backup(message);
+	send_all_backups(message);
 
 	std::map<std::string, std::vector<Dispositivo>>::iterator it;
 
@@ -56,22 +56,54 @@ void GCServer::Send_all(Mensagem message)
 	}
 }
 
+void GCServer::register_new_connection(int newsocket)
+{
+	int n;
+	char buffer[256];
+	n = read(newsocket, buffer, 256);
+	if (n <= 0)
+	{
+		cout << "ERROR registrando nova conexao";
+		return;
+	}
+
+	string buff(buffer);
+	string delimiter = "/";
+
+	string type = buff.substr(0, buff.find(delimiter));
+	buff.erase(0, buff.find(delimiter) + delimiter.length());
+
+	if (type == "app")
+	{
+		//  app/grupo/usuario
+		string group = buff.substr(0, buff.find(delimiter));
+		buff.erase(0, buff.find(delimiter) + delimiter.length());
+
+		string user = buff; //pega o resto
+		Dispositivo device;
+		device.socket = newsocket;
+		device.username = user;
+		group_map[group].push_back(device);
+
+		thread t(&GCServer::listen_app, this, newsocket);
+		t.detach();
+	}
+	else if (type == "backup")
+	{
+		//backup/port
+		string backup_port = buff;
+		backup_map[newsocket] = stoi(backup_port);
+	}
+	else
+	{
+		cout << "error registering new connection: type not foud!" << endl;
+	}
+}
+
 void GCServer::listen_app(int newsockfd)
 {
 	int n;
-	// register app
 	char buffer[256];
-	n = read(newsockfd, buffer, 256);
-	if (n <= 0)
-	{
-		cout << "ERROR registrando app";
-		return;
-	}
-	Mensagem reg = build_Mensagem(buffer);
-	Dispositivo device;
-	device.socket = newsockfd;
-	device.username = reg.usuario;
-	group_map[reg.grupo].push_back(device);
 
 	// keep listening app
 	bzero(buffer, 256);
@@ -122,13 +154,23 @@ void GCServer::handle_new_conections(int sockfd)
 		if ((newsockfd = accept(sockfd, (struct sockaddr *)&cli_addr, &clilen)) == -1)
 			printf("ERROR on accept");
 
-		/* read from the socket */
-		// registrar app ou backup
-
-		thread t(&GCServer::listen_app, this, newsockfd);
+		thread t(&GCServer::register_new_connection, this, newsockfd);
 		t.detach();
 	}
 	close(sockfd);
+}
+
+void GCServer::send_all_backups(Mensagem message){
+
+	string text = message.grupo + "/" + message.usuario + "/" + message.texto;
+
+	for (auto const& x : backup_map)
+	{
+		int backup_socket = x.first;
+		int n = write(backup_socket, text.c_str(), strlen(text.c_str()));
+		if (n <= 0)
+			printf("ERROR writing to socket backup");
+	}
 }
 
 // Backup replica ----------------
@@ -136,15 +178,17 @@ void GCServer::handle_new_conections(int sockfd)
 GCServer::GCServer(GGServer *ggs_, int port, int main_port)
 {
 	main_replica = false;
+	Replica_name = "replica_" + to_string(port);
 	ggs = ggs_;
 	ggs_->set_GCS(this);
 	int socket = create_socket(port);
-	thread t(&GCServer::handle_new_conections, this, socket);
-	t.detach();
+	thread t1(&GCServer::handle_new_conections, this, socket);
 	connect_to_main_server("127.0.0.1", main_port);
 	register_itself(port);
 	thread t2(&GCServer::listen_main_server, this);
-	t2.detach();
+
+	t1.join();
+	t2.join();
 }
 
 void GCServer::connect_to_main_server(string server_adress, int port)
@@ -204,6 +248,13 @@ void GCServer::listen_main_server()
 	close(main_socket);
 }
 
-void GCServer::register_itself(int port){
-	//send_main_server()
+void GCServer::register_itself(int port)
+{
+	string texto = "backup/" + to_string(port);
+	/* write in the socket */
+	const char *buff = texto.c_str();
+	int size = strlen(buff);
+	int n = write(main_socket, buff, size);
+	if (n <= 0)
+		printf("ERROR writing to socket\n");
 }
