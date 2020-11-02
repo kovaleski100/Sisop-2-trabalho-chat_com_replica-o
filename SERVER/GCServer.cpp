@@ -39,14 +39,15 @@ Mensagem GCServer::build_Mensagem(char *buffer)
 void GCServer::Send_all(Mensagem message)
 {
 
-	if(!main_replica) return;
+	if (!main_replica)
+		return;
 
-	send_all_backups(message);
+	string text = message.grupo + "/" + message.usuario + "/" + message.texto;
+	send_all_backups(text);
 
 	std::map<std::string, std::vector<Dispositivo>>::iterator it;
 
 	it = group_map.find(message.grupo);
-	string text = message.grupo + "/" + message.usuario + "/" + message.texto;
 
 	for (auto i : it->second)
 	{
@@ -54,6 +55,29 @@ void GCServer::Send_all(Mensagem message)
 		if (n <= 0)
 			printf("ERROR writing to socket app");
 	}
+}
+
+void GCServer::register_new_backup(int socket, int port)
+{
+	cout << "Registrando novo backup" << endl;
+
+	Backup new_backup;
+	new_backup.socket = socket;
+	new_backup.port = port;
+	backup_vector.push_back(new_backup);
+	if (backup_vector.size() == 1) return;
+
+	string text;
+	// send new next to the previous last on the list
+	text = "next/" + to_string(port);
+	int n = write(backup_vector[backup_vector.size() - 2].socket, text.c_str(), strlen(text.c_str()));
+	if (n <= 0)
+		printf("ERROR writing to socket backup 1");
+	// send new next to the new backup
+	text = "next/" + to_string(backup_vector[0].port);
+	n = write(socket, text.c_str(), strlen(text.c_str()));
+	if (n <= 0)
+		printf("ERROR writing to socket backup 2");
 }
 
 void GCServer::register_new_connection(int newsocket)
@@ -75,6 +99,7 @@ void GCServer::register_new_connection(int newsocket)
 
 	if (type == "app")
 	{
+		cout << "Registrando novo app" << endl;
 		//  app/grupo/usuario
 		string group = buff.substr(0, buff.find(delimiter));
 		buff.erase(0, buff.find(delimiter) + delimiter.length());
@@ -84,6 +109,7 @@ void GCServer::register_new_connection(int newsocket)
 		device.socket = newsocket;
 		device.username = user;
 		group_map[group].push_back(device);
+		send_all_backups("app/" + group + "/" + user);
 
 		thread t(&GCServer::listen_app, this, newsocket);
 		t.detach();
@@ -92,7 +118,7 @@ void GCServer::register_new_connection(int newsocket)
 	{
 		//backup/port
 		string backup_port = buff;
-		backup_map[newsocket] = stoi(backup_port);
+		register_new_backup(newsocket, stoi(backup_port));
 	}
 	else
 	{
@@ -112,7 +138,7 @@ void GCServer::listen_app(int newsockfd)
 		n = read(newsockfd, buffer, 256);
 		if (n <= 0)
 			break;
-
+		cout << "mensagem recebida!" << endl;
 		Mensagem m1 = build_Mensagem(buffer);
 		ggs->WriteMessage(m1);
 		bzero(buffer, 256);
@@ -160,13 +186,12 @@ void GCServer::handle_new_conections(int sockfd)
 	close(sockfd);
 }
 
-void GCServer::send_all_backups(Mensagem message){
+void GCServer::send_all_backups(string text)
+{
 
-	string text = message.grupo + "/" + message.usuario + "/" + message.texto;
-
-	for (auto const& x : backup_map)
+	for (auto const &x : backup_vector)
 	{
-		int backup_socket = x.first;
+		int backup_socket = x.socket;
 		int n = write(backup_socket, text.c_str(), strlen(text.c_str()));
 		if (n <= 0)
 			printf("ERROR writing to socket backup");
@@ -239,13 +264,33 @@ void GCServer::listen_main_server()
 			break;
 
 		//check if message or new backup
+		string buff(buffer);
+		string delimiter = "/";
+		string type = buff.substr(0, buff.find(delimiter));
+		if (type == "app")
+		{
+			cout << "Registrando novo app - backup" << endl;
+			backup_register_app(buff);
+		}
+		else if (type == "next")
+		{
+			cout << "Novo backup a direita - backup" << endl;
+			// erase "next/"
+			buff.erase(0, buff.find(delimiter) + delimiter.length());
 
-		Mensagem m1 = build_Mensagem(buffer);
-		ggs->WriteMessage(m1);
-		bzero(buffer, 256);
+			string next_port = buff.substr(0, buff.find(delimiter));
+			next_port_ring_election = stoi(next_port);
+		}
+		else
+		{
+			cout << "Mensagem recebida - backup" << endl;
+			Mensagem m1 = build_Mensagem(buffer);
+			ggs->WriteMessage(m1);
+			bzero(buffer, 256);
+		}
 	}
-	//eleicao()
 	close(main_socket);
+	start_election();
 }
 
 void GCServer::register_itself(int port)
@@ -257,4 +302,24 @@ void GCServer::register_itself(int port)
 	int n = write(main_socket, buff, size);
 	if (n <= 0)
 		printf("ERROR writing to socket\n");
+}
+
+void GCServer::backup_register_app(string app_info)
+{
+	//  app/grupo/usuario
+	string delimiter = "/";
+	// erase "app/"
+	app_info.erase(0, app_info.find(delimiter) + delimiter.length());
+
+	string group = app_info.substr(0, app_info.find(delimiter));
+	app_info.erase(0, app_info.find(delimiter) + delimiter.length());
+	string user = app_info; //pega o resto
+	Dispositivo device;
+	device.socket = 0;
+	device.username = user;
+	group_map[group].push_back(device);
+}
+
+void GCServer::start_election(){
+	cout << "Comecou a eleicao!" << endl;
 }
