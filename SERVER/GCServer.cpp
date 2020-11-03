@@ -86,6 +86,7 @@ void GCServer::register_new_connection(int newsocket)
 {
 	int n;
 	char buffer[256];
+	bzero(buffer, 256);
 	n = read(newsocket, buffer, 256);
 	if (n <= 0)
 	{
@@ -148,6 +149,7 @@ void GCServer::register_new_connection(int newsocket)
 		close(sock);
 		participant = false;
 
+		next_port_ring_election = 0;
 		cout << "Conectando com novo lider!" << endl;
 		sock = connect_to_port("127.0.0.1", stoi(new_main_port));
 		if (sock == -1)
@@ -242,6 +244,7 @@ GCServer::GCServer(GGServer *ggs_, int port, int main_port)
 {
 	main_replica = false;
 	Replica_name = "replica_" + to_string(port);
+	next_port_ring_election = 0;
 	ggs = ggs_;
 	ggs_->set_GCS(this);
 	int socket = create_socket(port);
@@ -299,6 +302,7 @@ void GCServer::listen_main_server()
 {
 	int n;
 	char buffer[256];
+	bzero(buffer, 256);
 	while (1)
 	{
 		n = read(main_socket, buffer, 256);
@@ -372,6 +376,11 @@ void GCServer::start_election()
 	}
 
 	cout << "Iniciei a eleicao!" << endl;
+	if(next_port_ring_election == 0){
+		cout << "Sou o unico backup, sou o lider agora!" << endl;
+		main_replica = true;
+		return;
+	}
 	participant = true;
 	int sock = connect_to_port("127.0.0.1", next_port_ring_election);
 	if (sock == -1)
