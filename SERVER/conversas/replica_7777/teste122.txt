@@ -1,0 +1,20 @@
+81abf998-7bd9-4484-8367-0c0526f605a5;teste122;rodrigues;<entrou no grupo>
+0a4ad3c9-a86e-43d7-a997-c0b154391929;teste122;rodrigues;a
+5c5e913a-edc5-4c8a-82bc-1cd3b4b9abbb;teste122;rodrigues;a
+5cb0c7be-d8bf-4a29-a021-41b1d0ce49ee;teste122;rodrigues;a
+493d0f7d-832a-4287-be38-f1d5cd8d50aa;teste122;rodrigues;a
+0d6f603e-6fee-4970-94c3-b7b8d5a43963;teste122;rodrigues;a
+1f369de1-e4f4-4870-90f9-27f709629434;teste122;rodrigues;<entrou no grupo>teste122/rodrigues/ahateste122/rodrigues/alo
+ecdc564b-8349-4ae1-b294-a1da377790b6;teste122;rodrigues;aha
+b216bedd-3786-4ede-aa64-17c730ca3dcd;teste122;rodrigues;seila
+b0648044-6f50-45cb-aa67-e52ababbd63c;teste122;rodrigues;meio louco
+b6c40d6d-b743-41ad-9c8b-8fe8ed7d62cb;teste122;rodrigues;a
+618ab38d-24ee-4fa4-bbc1-693cb4a6aa7b;teste122;rodrigues;a
+272b36cf-ff10-4210-a7d8-d273f49543fc;teste122;rodrigues;a
+cebfcb4c-4eb5-4e03-bd41-f1ce06af0ea1;teste122;rodrigues;<entrou no grupo>
+3ad0dccf-88d3-4641-9682-bc4191728d49;teste122;rodrigues;alo
+a5f0069a-d8de-476c-9ab3-865a95a9ad59;teste122;rodrigues;ok
+a845889f-0f3d-421c-b944-d01f3315e11d;teste122;rodrigues;<entrou no grupo>
+e98e33e6-3dc3-4b0b-9ef2-ab0494fe12c7;teste122;rodrigues;a
+b5e85a74-74e9-497c-9769-d47a7757be7f;teste122;rodrigues;a
+4447df48-d311-4b33-aaf5-1cfdaca0bff3;teste122;rodrigues;a

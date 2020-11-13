@@ -2,7 +2,7 @@
 
 GCClient::GCClient(string server_adress, int port, string user, string group)
 {
-    connect_server(server_adress, port);
+   connect_server(server_adress, port);
     register_itself(user, group);
     /* read from the socket */
     thread t(&GCClient::listen_server, this);
@@ -12,6 +12,29 @@ GCClient::GCClient(string server_adress, int port, string user, string group)
 GCClient::~GCClient()
 {
     close(server_socket);
+}
+
+int GCClient::resv_port(){
+	int port;
+	int sockfd;
+	struct sockaddr_in serv_addr;
+	socklen_t addrlen = sizeof(serv_addr);
+
+	if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < -1)
+		printf("ERROR opening socket");
+
+	serv_addr.sin_family = AF_INET;
+	serv_addr.sin_port = htons(0);
+	serv_addr.sin_addr.s_addr = INADDR_ANY;
+	bzero(&(serv_addr.sin_zero), 8);
+
+	if (bind(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
+		printf("ERROR on binding");
+	
+	getsockname(sockfd,(struct sockaddr *)&serv_addr, &addrlen);
+	port = ntohs(serv_addr.sin_port);
+	close(sockfd);
+	return port;
 }
 
 void GCClient::connect_server(string server_adress, int port)
@@ -52,7 +75,10 @@ void GCClient::connect_server(string server_adress, int port)
 }
 
 void GCClient::register_itself(string user, string group){
-    string texto = "app/" + group + "/" + user;
+    string port;
+	other_port = resv_port();
+	port = to_string(other_port);
+	string texto = "app/" + group + "/" + user + "/" + port;
     /* write in the socket */
     const char *buff = texto.c_str();
     int size = strlen(buff);
@@ -69,14 +95,15 @@ void GCClient::listen_server()
     while (1)
     {
         n = read(server_socket, buffer, 256);
-        if (n <= 0)
+        if (n <=0)
             break;
-
+		
         Mensagem m1 = build_Mensagem(buffer);
         gmc->DisplayMessage(m1);
         bzero(buffer, 256);
     }
     close(server_socket);
+	handle_new_conections(other_port);
 }
 
 Mensagem GCClient::build_Mensagem(char *buffer)
@@ -109,4 +136,50 @@ void GCClient::Send_server(Mensagem mensagem)
     int n = write(server_socket, buff, size);
     if (n <= 0)
         printf("ERROR writing to socket\n");
+}
+
+void GCClient::handle_new_conections(int port)
+{
+	int newsocket = create_socket(port);
+	server_socket = newsocket;
+	register_itself("andrews","teste12");
+	thread t(&GCClient::listen_server,this);
+	t.detach();
+	return;
+	
+}
+
+int GCClient::create_socket(int port)
+{
+	int sockfd,newsockfd, n;
+	socklen_t clilen;
+	char buffer[256];
+	struct sockaddr_in serv_addr, cli_addr;
+
+	if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < -1)
+		printf("ERROR opening socket");
+
+	serv_addr.sin_family = AF_INET;
+	serv_addr.sin_port = htons(port);
+	serv_addr.sin_addr.s_addr = INADDR_ANY;
+	bzero(&(serv_addr.sin_zero), 8);
+
+	if (bind(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
+		printf("ERROR on binding");
+
+	while (1)
+	{
+		if(listen(sockfd,1) == 0){
+		//cout<< "Conectou"<<endl;
+		break;
+		}
+	}
+	
+	clilen = sizeof(struct sockaddr_in);
+	if ((newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen)) == -1) 
+		printf("ERROR on accept");
+	
+	bzero(buffer, 256);
+	
+	return newsockfd;
 }

@@ -1,0 +1,304 @@
+558aeaf1-2a42-4478-bd34-ccf89cad5136;teste12;andrews;<entrou no grupo>
+c9d33440-df68-4726-b0dd-406c38b43925;teste12;andrews;<entrou no grupo>
+dd185393-0dfd-4848-99dd-570bae445252;teste12;andrews;a
+87e18652-8680-4ca5-a53a-8e8e65c55998;teste12;andrews;a
+92c990ed-5c75-416d-83af-8421c005e80b;teste12;andrews;a
+6a5cbe75-372b-42db-8a7e-affabbbdea15;teste12;andrews;a
+0674cd3e-be82-42d4-a25b-c42830db1033;teste12;andrews;a
+23b63636-b373-4f62-8eff-25b4f1fc041f;teste12;andrews;a
+0c012e4d-a954-4af7-870d-275b9978c9f7;teste12;andrews;a
+761dd225-b48d-4b63-a913-76f43b723b7a;teste12;andrews;a
+0186ce23-e43c-43ec-9a49-12fe09c8468a;teste12;andrews;seila
+7c3d4009-ad69-4749-9886-061faa505f0e;teste12;andrews;seila
+5db4de48-25ef-4164-ac92-b7e313eb4925;teste12;andrews;isos foi estranho
+eb2fd82e-4b11-4c96-9051-63be92e65c75;teste12;andrews;isos foi estranho
+286b8df2-dca8-43e5-9155-f5cd8095599c;teste12;andrews;a
+17520213-b335-4b86-9592-6e5eeb79a456;teste12;andrews;recebe
+cbb49ea1-fc1a-4759-8a0c-943e59e7086c;teste12;andrews;pls
+bc06107b-c6b5-405b-b7a9-9ff2b92d1292;teste12;andrews;so vou saber se souber
+f6476e42-6214-4dfe-a70c-386c2c0d537b;teste12;andrews;a
+6272d83d-76e2-41d6-a427-81bf846c5457;teste12;andrews;<entrou no grupo>
+8df6745c-6d41-4774-8665-e91ff053180e;teste12;andrews;<entrou no grupo>
+86554ddc-835f-4c50-8a6b-66b423fed49b;teste12;andrews;a
+773b4eb7-a7d6-4445-b810-0e1e700114f5;teste12;andrews;a
+ddd5626d-ab85-4a36-a6ba-dbab1a4fc287;teste12;andrews;seila manoteste12/andrews/seila mano
+52602c05-813f-4de2-a222-6fc0efe66ce4;teste12;andrews;fasfa
+3749b57b-b2ef-4fb8-827b-58154d47c01c;teste12;andrews;fasfa
+2a3f4a38-9bde-46fe-a427-47dd0fa1463b;teste12;andrews;asdffeteste12/andrews/asdffe
+d4454990-d223-4346-8ba1-cdeff66b4cdd;teste12;andrews;sdsfdas
+1d3465c1-3632-4f0f-a17c-65fc28573826;teste12;andrews;sdsfdas
+a80c33f1-f4ff-46fb-a1d8-371af5f235be;teste12;andrews;fsdagsadgfa
+14621a9a-b9e9-46a1-bc5b-52e00f1b4451;teste12;andrews;fsdagsadgfa
+5e3cf224-7493-4005-83e4-30df34a53d31;teste12;andrews;dfa
+191913ec-8323-4659-bfb3-859569387874;teste12;andrews;dfa
+28b9ed0e-7ac8-4881-86a4-825c47056ea0;teste12;andrews;asdfa
+d5da7ab4-2700-4b29-9b01-6aaa1c951dcd;teste12;andrews;a
+bf0695e0-e484-45fd-a0cb-230e35e0c5e3;teste12;andrews;sd
+6e5ad35f-9f98-46c6-99eb-5c58729f4a0e;teste12;andrews;f
+4ca562d2-0d05-44f8-b65e-35e391792b64;teste12;andrews;re
+4b5ea828-2c3c-4a71-83a6-277bce3b4836;teste12;andrews;w
+421ab6c8-1718-4a1a-95af-4f664f37f523;teste12;andrews;q
+a98c19fa-f4b4-4259-a3a2-d237235ec643;teste12;andrews;a
+796ca2f6-110c-4e0d-a5aa-26d84498a2e9;teste12;andrews;s
+85f82325-fe69-4cbd-a83d-a5a80ac1eee9;teste12;andrews;d
+cb58186b-50af-48f7-bdd3-e9db55248c9a;teste12;andrews;fr
+5763a016-b6a6-4239-98fc-32484a65bb35;teste12;andrews;ew
+a41e2d96-8da2-405c-a82f-56820b59b724;teste12;andrews;qasdf
+6489d74f-68b4-40f4-8ec1-3dda19f0f346;teste12;andrews;aa
+b00a3a49-dfec-4b77-8a82-ea0eb0262c95;teste12;andrews;s
+16a81fa9-f119-4b02-9ae5-f65e65fe1005;teste12;andrews;d
+4431593c-9356-4ec6-b8e4-7df6df7616d1;teste12;andrews;fe
+b9fd78a9-4852-43f0-814f-24feb22aa022;teste12;andrews;nao funcionou
+747e8739-3807-431e-87c9-df0b761016a0;teste12;andrews;<entrou no grupo>
+f2920442-2a17-4d49-b8ce-fd2fe595e973;teste12;andrews;a
+2ec60c9b-d937-46ce-8401-2ea1583bb35c;teste12;andrews;agora so um
+91bdeefa-7539-4dc0-93bd-e4f66b1d97de;teste12;andrews;comecando teste
+eb64e075-b4ec-422f-b35e-cb4ebb33529e;teste12;andrews;a
+5e19e443-8beb-4ea3-ab49-1dcea62f680d;teste12;andrews;nao funcionou ainda
+ed576aad-e8ea-4681-b7bd-24495be294b6;teste12;andrews;<entrou no grupo>
+50572bc0-bf59-409c-8273-97b9431cb1c5;teste12;andrews;aha
+9928d26c-afc5-4573-8228-9e965b64d1e8;teste12;andrews;testando
+f391813b-0500-4136-a06b-5831c3fa4384;teste12;andrews;a[3~
+5ee64cba-2be6-436f-90dd-2e74d6d00700;teste12;andrews;<entrou no grupo>
+328219c1-c8b8-41bb-ba34-9f862f1d253c;teste12;andrews;a
+0cc01c0e-47ea-44f5-ba04-9d677b9e4aaa;teste12;andrews;testando
+80e6514f-45b6-4288-b3c6-1daf5c621753;teste12;andrews;a
+271ef008-8645-429a-9ddc-438aee0dc7ab;teste12;andrews;x
+4d36d21b-42d9-43f7-9378-1f5357cb5c68;teste12;andrews;b
+7201479a-8f0f-4566-843d-268c7d12f48a;teste12;andrews;ola
+15c30101-4197-4872-874a-81c722121e64;teste12;andrews;seila
+0d36fc76-a7f4-402d-b557-e198492c2c97;teste12;andrews;missao bem sucedida
+57503ece-63cf-4ad5-abaf-2fb47ea0d808;teste12;andrews;sucesso
+3b5eda39-99f1-434a-83cc-1021447351f3;teste12;andrews;top
+e4da67ef-d83f-4bd6-9833-4201edc5dbe3;teste12;andrews;<entrou no grupo>
+8436bb24-60cf-4be6-b393-8a8fdfc45281;teste12;andrews;entrei
+25137c76-242f-4054-8d8e-3b606045ea5d;teste12;andrews;eu acho
+1ff5085f-9acd-4af7-95ac-8245e5fcade2;teste12;andrews;seila
+f3711152-2b5a-479c-a67c-68b8df726c00;teste12;andrews;meio triste
+fbd2c31a-774d-49f1-8880-ab3d9bd57c5f;teste12;andrews;a
+3e27fb2e-38c4-46e6-aca2-b0936c06bcd0;teste12;andrews;ta
+aac9626d-b1b0-45cc-a7b9-c06c73d43994;teste12;andrews;seila
+990fc8c8-0172-464c-8a75-0eac17dfb0b4;teste12;andrews;meio triste
+340c4ed3-125d-4c29-997e-a441999688df;teste12;andrews;<entrou no grupo>
+f36f1b99-474b-4a77-8cb8-a14ba0c00302;teste12;lima;<entrou no grupo>
+28aa708a-c887-4892-aae1-36533b83b6af;teste12;lima;a
+b25ba9e4-7375-4dba-a18d-1a29848c5fe8;teste12;lima;a
+dda2637b-b343-4b04-b831-8579fffeec66;teste12;lima;a
+248a9a07-41a5-4193-bfa1-3861010613e8;teste12;lima;a
+dbd6b105-ab14-4f53-be6f-94419a52c6dc;teste12;lima;a
+5f25d972-95d0-4e0f-98d9-f27e306bddfc;teste12;andrews;b
+c83aaa27-ffe6-4929-a636-9a0c7461ad51;teste12;andrews;b
+c1fd69f2-ae25-4116-8195-0fe7b0f9ccda;teste12;andrews;b
+142ffaa6-68a8-4bf0-b46b-1e16ccbeff66;teste12;andrews;b
+c35fa56b-f9c4-400b-9cbe-3f31210376c5;teste12;andrews;<entrou no grupo>
+a3f94932-aa0f-41d8-b227-9688e672c59c;teste12;andrews;aha
+57cbf6e3-450e-48ee-8278-993ea5333274;teste12;andrews;<entrou no grupo>
+4d09975f-2a19-41e5-9523-1ba1078fc388;teste12;andrews;fadsgfdasg
+e1bc0c05-fb34-44e6-9045-40b7b42159cd;teste12;andrews;<entrou no grupo>
+6723ef44-019a-4e0c-9bb4-82c974d59555;teste12;andrews;fafasdsda
+142b0753-00eb-4308-9dd2-ba8531be3eea;teste12;andrews;<entrou no grupo>
+52cd8ee1-0351-4303-aa5f-181b79c7ef2e;teste12;andrews;aha
+f064b5e1-bb44-4eda-aab1-0284c662a80f;teste12;andrews;<entrou no grupo>
+8923e73f-635c-49d6-8943-46447090aab6;teste12;andrews;adfhjaklga
+7a37ee2d-69ab-4e74-baa2-8a40f35c5b0c;teste12;andrews;aha
+14fdb763-6705-4e6e-8f15-eaece6ab3eb5;teste12;andrews;funciou
+568e3753-d737-49ec-bcb7-1de2297e4197;teste12;andrews;aha
+c8066e63-2914-4312-bc9a-9a956a256d0d;teste12;andrews;dlkfajhsglksajdg
+e243abde-bea7-40b9-9f48-4862c44278d3;teste12;andrews;sadgihsalkga
+f481d0e7-2fc8-4ff8-a110-6940f65850bc;teste12;andrews;asgdklhsaglkças
+69d1a5bc-2b36-400e-af89-cf2e1314526f;teste12;andrews;gsdkhglkaçsj
+d3e14437-00a6-402c-9db3-e75aa416c601;teste12;andrews;gwsdaighaslkçg
+4f67825a-4d2f-4a1f-b7e3-17dfa71be1ad;teste12;andrews;<entrou no grupo>
+428beab9-5528-40af-ab01-a34eb207db31;teste12;andrews;aha
+3950fb7c-82df-4ead-acb0-d3dbf779c0a1;teste12;andrews;ola mundo
+eae5be42-f2af-459f-b042-f88e0cbeeb96;teste12;andrews;comecando teste
+eef95441-4970-4735-89d0-4dc1894b67b4;teste12;andrews;aha
+e27e2dc7-d84e-42fd-891d-f3ac904da96c;teste12;andrews;aha
+f14ae51c-1193-43f1-a441-b407b4bbc42b;teste12;andrews;seila
+46e65d02-836d-408a-a047-d49ae1caf86d;teste12;andrews;coisa meio louca
+e519f8c6-6685-476f-8b60-3b5d6eadddaf;teste12;andrews;<entrou no grupo>
+3283457d-c293-45dd-a8c8-77b200cfd587;teste12;andrews;<entrou no grupo>
+00bd5af7-60f3-4b55-92f7-7f5bea74df8a;teste12;lima;<entrou no grupo>
+8a6b1e7d-d1af-4fa0-a52e-bee102aa226b;teste12;lima;lima
+5cd86c0d-6a4c-4dd0-a0c5-cc0f6d044842;teste12;lima;sou eu
+8dd14f1c-e412-4f9f-aa6e-3ee2a0fa044d;teste12;andrews;sou eu
+f7443271-7227-4730-8184-cfbfb360abe2;teste12;andrews;top
+69452b02-e309-44be-9c41-3d7ad2b37eda;teste12;andrews;demais
+f439e867-fd7c-4d1e-a5c5-96212a7463be;teste12;lima;ue
+11ef5dd5-049b-46c5-a9be-fa197c497fad;teste12;andrews;deu ruim
+ce38e6ca-42f4-448e-86be-00009434c57a;teste12;lima;deu ruim
+be0738cf-dec1-4954-a740-5481f0e86382;teste12;andrews;aha
+a1ae0f25-e707-4ae6-b699-838aaabec1f2;teste12;lima;aha
+361bda1a-bfc4-4667-970d-782dba4f9b00;teste12;lima;meio louco
+e4c4199e-21c2-4d41-992e-afbc35cdb853;teste12;andrews;meio louco
+4d313fee-4794-4188-9da4-87a6b856de23;teste12;andrews;meio louco
+34c4804e-6cab-4de1-ba7e-0503c77a6f92;teste12;lima;meio louco
+2d72515d-f529-4102-811f-0430601c81fc;teste12;lima;a
+2a79ea1b-9dd9-40ba-8956-38001cc98924;teste12;lima;a
+3809fde3-8564-4558-8e15-ec589be2217f;teste12;lima;a
+b0c4b8ad-89fe-4b5e-bf7a-1d457ff3fde6;teste12;andrews;a
+6e250143-f159-4807-921e-9f2c1f0d0477;teste12;andrews;a
+276c9218-d024-42c7-95e7-111e97fd2d87;teste12;andrews;<entrou no grupo>
+10cf2d25-cb53-43bf-b842-83591fc9c908;teste12;andrews;alo
+72fc6e47-fc7e-4eb1-9faa-940ac5e97533;teste12;andrews;ok
+969ccfbc-41ab-4455-a20e-023181e7980a;teste12;lima;<entrou no grupo>
+159c33a4-f245-456e-a831-ad93dcfaffcf;teste12;lima;alo
+e6f019d7-2c94-478d-b90c-63dfd88cedba;teste12;lima;ok
+cbd840a1-85c1-4a5d-9154-37b1ab4a7e26;teste12;andrews;<entrou no grupo>
+d2657885-33ad-42e6-b141-5309666f170e;teste12;lima;<entrou no grupo>
+57024c4f-1649-4f1f-a457-b4d7baa7df94;teste12;lima;a
+50632533-f218-4fcc-9778-84dfafc380ae;teste12;andrews;a
+0a24fee1-fa1b-4d4f-8e88-f555417d6750;teste12;andrews;<entrou no grupo>
+6947de87-5138-468f-86bf-95e9d384243b;teste12;lima;<entrou no grupo>
+8b1bdf2a-79ad-4546-8d8a-e4b686831369;teste12;andrews;ah
+d3ffa717-f7df-4271-82d6-dea13ded1046;teste12;andrews;a
+0841ce05-6ef5-4306-b092-3b2c78a50298;teste12;andrews;a
+7353ad2b-0ecf-4a3b-bf42-ef7f27b3c26f;teste12;andrews;a
+b0b3c0d1-0564-4197-981e-2cb61b8440ed;teste12;andrews;a
+cd26c49b-658c-4539-a32b-97ebbb9231a7;teste12;andrews;a
+4f189cd1-a9de-4436-af2e-593712c30414;teste12;andrews;a
+017cf884-0dec-4f95-96e6-76b8d7c2bad1;teste12;andrews;a
+3ceb5cc3-e301-4fb4-a77d-cc38cdbfae29;teste12;andrews;a
+210becda-c5a0-4958-9fdf-c2f0614310fa;teste12;andrews;a
+78263b67-cb42-4f2d-aafd-949b7179d722;teste12;andrews;a
+a472c6b4-d656-43a4-ae5a-54b5214bdfa3;teste12;andrews;a
+e6a5b8f9-136b-4ec5-b937-f8cae7696280;teste12;andrews;a
+2fe3a46f-8782-400c-838f-557f8b1d55dc;teste12;andrews;a
+48ebce4c-8830-438d-9b16-7eafeef6bd51;teste12;andrews;a
+9675f648-9b9f-426f-85f7-d51e06daee73;teste12;lima;a
+c0cb2925-78af-4ae9-9fb1-a0967de1bc21;teste12;lima;a
+c386f27c-cb93-4abd-9d58-07c8a7ea8d9e;teste12;lima;a
+9872b3b8-93f1-460a-8775-e46836361b06;teste12;lima;a
+914f36e3-0861-4efd-9867-e95eb7645e44;teste12;lima;a
+0f517f66-be6f-4a72-93ff-6cb2b1ea3bd3;teste12;lima;a
+ac049556-172c-42e8-85eb-9b60dbe4c1b4;teste12;lima;a
+88a11c4f-1a5c-46b0-8934-f0ec4440f490;teste12;lima;sdgf
+6cb9d628-cb85-4b47-93dc-7c95e20d7ec0;teste12;lima;ag
+01cb5dad-3090-4c20-bc81-8d1f3d0b50c8;teste12;lima;adg
+f75c5bc7-2bd2-4a23-b9e1-73bb627858bb;teste12;lima;adf
+15cfdd7f-1ae7-4ed8-99d8-3cf84ff3ef01;teste12;lima;sadg
+ca87f76b-7214-4ffd-9943-0e7c2c660d0c;teste12;lima;sad
+ece3fbb0-bd5c-443e-8b07-6d9f691555dc;teste12;lima;gfas
+69c99406-a04f-4a89-9e43-65f0fde1f2bf;teste12;lima;dfa
+6a08f9c7-43a0-4852-b776-77eef2c49e3a;teste12;andrews;asd
+72c5810a-6c16-4b95-88f8-cd49dc94e904;teste12;andrews;as
+86f8891d-9ebf-4c26-b591-966cee5a6d8f;teste12;andrews;dsadf
+fd2c6dc9-1d1a-4ef4-b0a2-f50134c5538d;teste12;andrews;sa
+6352d20b-1d88-4a88-b005-950e77cb2623;teste12;andrews;sdd
+7e997fd7-2d28-463d-b19b-48a35c121ec6;teste12;andrews;df
+b84e4dcd-3678-495a-932e-057da83b4e8a;teste12;andrews;ds
+3070fd76-55f1-481f-b349-0b8c41beecb4;teste12;andrews;as
+e83137fa-b82f-4b2b-8c71-29e22279088b;teste12;andrews;df
+ca870563-d34e-4eb8-bd48-366eae7bb730;teste12;andrews;da
+da09feed-bfae-456e-800c-8380b866e3e1;teste12;lima;s
+d3bd7a8f-5173-4c45-8137-557fa18fdaeb;teste12;lima;asdf
+06027281-9b9d-41ba-9941-73547a955c58;teste12;lima;fds
+349258f1-e261-44af-95a2-65eea01cc7fe;teste12;lima;as
+f88815d0-772c-485c-b4e4-fa6e06e00470;teste12;lima;dfsad
+2b41b8bf-466d-445c-9c20-0f98be3cb955;teste12;lima;a
+40cdded3-ab10-4b09-9e05-c96b4b132041;teste12;lima;a
+72ed314f-16ee-46e5-8255-5c9ba17d0911;teste12;andrews;a
+cc43a712-42ee-4afc-95c3-997ddd112a1a;teste12;andrews;a
+e904f157-4ad0-4acd-bd42-91c4762ef12f;teste12;andrews;as
+c6e72917-54af-4599-892a-1c5bab4f9193;teste12;andrews;d
+77052c29-034c-46b9-b724-51324fe98234;teste12;andrews;f
+d20d8481-113c-4662-920a-dfd1beff24c8;teste12;andrews;erw
+cd32e11e-d6fb-4b13-ac8c-9df85c6094ec;teste12;andrews;as
+8620f000-1370-4bee-91ce-b1c87da5b1b3;teste12;andrews;<entrou no grupo>
+53e73737-fe11-4f42-9cae-a5b4ab323d02;teste12;andrews;aha
+24f5c79a-4cd9-4e54-8932-fef9bce4a76c;teste12;andrews;seila
+9fb2eba7-227c-4d79-ba2a-f997aef8ca8b;teste12;andrews;mano
+80b9f338-67f8-427e-b1c7-ab4167dd4cba;teste12;andrews;erro
+fbea06ed-963a-4a2c-a38d-33b7f9dc9420;teste12;andrews;nao
+fc5e0c21-f01c-484c-88e8-54ffdab96f10;teste12;andrews;eu acho
+ef4afe97-186d-4b46-89e9-8a29ac357c29;teste12;andrews;seila
+2ac7a3ef-3e52-40a1-8dec-638c1d8a60f4;teste12;andrews;meio triste
+05ddc92f-ad43-485e-ae0f-1623d7a42eee;teste12;andrews;<entrou no grupo>
+59431682-8924-4860-8034-16d935758488;teste12;lima;<entrou no grupo>
+960d98d9-fd00-4eac-8729-b8d5a67b3785;teste12;andrews;aha
+87b55886-a07b-459c-8583-50cc840fd8cf;teste12;andrews;seila
+8fe433cb-b9d8-4a10-be2e-cebb0f4b52a5;teste12;andrews;a
+44dbd634-489e-4a08-8544-0462bd8112c5;teste12;andrews;a
+5e21c360-a004-4c9c-98c5-ce60202953bd;teste12;andrews;a
+b3961248-1f66-4368-92b0-c77c898bedf8;teste12;andrews;a
+96e10b1f-9e94-4f4c-a1b1-85cad02a2153;teste12;andrews;a
+a4507f8f-1d17-4614-99c8-65240194cf9e;teste12;andrews;a
+282ed2cd-00fb-4f86-877d-c974ea2b04d2;teste12;andrews;a
+446dd060-70ac-4daf-91a3-d5d2ed662083;teste12;andrews;a
+f673aa51-2f4f-4cef-b600-72ed3c5d2eda;teste12;andrews;a
+04dd6233-12e8-4fd2-9b86-cc49b286d7ca;teste12;andrews;a
+4596e5ed-3e9c-4bdb-aebd-f924c30fb25d;teste12;lima;a
+9a936fb2-37ec-4039-a556-b655256cc5d6;teste12;lima;a
+cdc2bb50-91fc-4f0e-a740-05210083f837;teste12;lima;a
+02d4a89a-f9fb-4c57-9c70-67630d6cf0fc;teste12;lima;a
+2bc38dca-044f-471c-bb6c-198190255805;teste12;lima;a
+830147ef-9d93-4100-9d04-df5f6619e9ce;teste12;lima;a
+381eba4c-15d6-40c8-9a32-58560ebc63b1;teste12;lima;s
+40b98e32-1241-441e-bdb2-ae841e19d6c5;teste12;lima;v
+9569dda5-ec51-47f2-a818-93b50eca222d;teste12;lima;b
+b7675acc-1e02-4caf-bdad-c146677f2ed6;teste12;lima;f
+bdc39ed5-7249-4d7e-b954-e239d6a5a510;teste12;lima;s
+21d8a45c-2ba0-4b61-a1f5-e8bb18345922;teste12;lima;asd
+5c389458-c9a4-46a4-8e82-b9e6a0c16db6;teste12;andrews;<entrou no grupo>
+9c119a2d-588e-4172-ba39-6007bb43bf98;teste12;lima;<entrou no grupo>
+06ffe532-2fa6-4e7e-945a-6efc7514757e;teste12;andrews;aha
+9688b7c2-90ce-429c-a726-7917dcfad5b9;teste12;andrews;oi mano
+8c214e30-b3be-4331-9520-0940a0f81a4b;teste12;lima;ola
+7aaf5316-c730-41cd-b393-a0ff7ab22c1c;teste12;andrews;a
+1c5c9b93-0161-4f61-ba89-96cd1e5a019d;teste12;andrews;a
+f8ebc33d-ae88-4637-a120-643392f09f91;teste12;lima;a
+35edeff4-e163-41d4-9f60-6ea57963751b;teste12;lima;a
+484104ea-19e4-4bc2-99b5-d18a3a6eb0cb;teste12;lima;a
+6e5b3740-a9ba-4bd6-a404-9107eb68c916;teste12;lima;a
+e4565560-a1b4-43c5-bb7c-6c3941ef1a69;teste12;andrews;a
+677a0385-d5c9-41a6-b1da-5c906f4e5e8f;teste12;andrews;a
+375316ee-a3d1-4228-b056-8917fbf01e7b;teste12;andrews;a
+54d6b1f7-c33b-4918-a4fd-1f1699897802;teste12;andrews;a
+6b1135fe-751a-4569-bff4-208ae72eda81;teste12;andrews;<entrou no grupo>
+d86bc8bd-751f-4668-88e8-4e9651a39cfb;teste12;andrews;adfafsdaga
+356cf8da-c44f-447f-a233-bd3ac49e0a91;teste12;andrews;afdsafa
+7810d375-81be-4dd8-86f4-b5ad6a90f297;teste12;andrews;fas
+e01fd828-4113-430a-8925-ef5230a6833e;teste12;andrews;dsf
+517c0148-f416-4099-a47f-bdc948561db8;teste12;andrews;sdgas
+dce3f287-6753-4ff0-8601-3c86debebd0c;teste12;andrews;dgasga
+d92259f5-bbcd-496d-8b1d-ee07aca0ee79;teste12;andrews;<entrou no grupo>
+4bb19fd2-f08b-482b-9fa1-80a3eeffe0bb;teste12;lima;<entrou no grupo>
+71cc73f5-a71e-42a7-9047-c9c304f14b7e;teste12;lima;aha
+6a1277a3-44df-4a02-87ac-22df4b86ff4e;teste12;andrews;droga
+7906e2bd-262a-4270-9e84-96af969ec91c;teste12;andrews;comecar teste
+3bbc5cd7-44e7-4d64-ad3b-8746a6cc8719;teste12;andrews;a
+b43d7566-d1eb-44ed-a8df-e9e969f364ae;teste12;andrews;a
+34db37d6-4b02-4408-85a5-6016d6532008;teste12;andrews;a
+2854975b-aecd-44ef-a722-aa6747463657;teste12;andrews;a
+e6f1a4bb-bc5c-496f-8411-e4690a71bbed;teste12;andrews;a
+a66a3cf9-3578-4445-971a-455b347b246c;teste12;andrews;aa
+c174d078-6fb9-42bb-a23d-6aab1ad1d860;teste12;lima;asfd
+9eeaba9d-98b4-4d96-b3f3-80424adc002f;teste12;lima;sa
+794ce5ba-7249-494c-83da-8a50eddc1acf;teste12;lima;dgs
+4968eb4f-7fb4-4120-88a6-89ec120c5518;teste12;lima;ag
+d6f7a179-0fd4-4323-8656-ed2095b50068;teste12;lima;asdf
+28617708-4be8-48aa-8ee9-6ce344229a88;teste12;lima;as
+b7829775-a540-4654-a9b4-05bca81c63af;teste12;lima;dfwe
+2a34aefa-2e40-4735-b176-2daf2ffd408f;teste12;lima;g
+46f67864-2076-4dcb-994c-dd18b374a8f6;teste12;lima;sad
+6b1e7634-6d7d-4b7a-82d6-a9670ca28d61;teste12;lima;gv
+95eb77fb-7c61-4351-a9e7-f2f3c82497d3;teste12;lima;sdavc
+f2c7cf15-7b73-4d90-a1ae-37c481599052;teste12;andrews;dfasg
+fbda912c-aeb6-4086-a9f3-07c488d64563;teste12;andrews;dsgasd
+00d267a7-9b26-4cf2-bcc5-324a2fbafee4;teste12;andrews;rfwe
+718c78dd-a625-423b-996e-70c636ba2775;teste12;andrews;g
+656bb8e1-de67-4f08-9e6c-86efed42ba1b;teste12;andrews;sad
+7b9c9d20-08f3-4d50-8651-447ee9e4dd7e;teste12;andrews;ga
+555d11e8-d12f-4f6d-a303-57ebcb1f38ff;teste12;andrews;sgf
+a6bca0a9-89e4-4e0d-962f-6af73e396f4b;teste12;andrews;asgd
+c2ca0efd-5def-48ff-9972-79b614308b85;teste12;andrews;sad
+fda50aa9-50cb-4387-babe-62fa6262d1c1;teste12;andrews;fas
+411d151d-8ca0-4345-88c1-814dda639d45;teste12;lima;asdgasg
+68ff551b-3070-47ef-8795-1ea2f5954358;teste12;lima;sagd
+bfe1a8eb-954e-4d47-a6de-4c3cf909e38b;teste12;lima;asgd
+e163cfb2-6e80-44a6-955b-958e12d54d28;teste12;lima;dasg
+f75d3a4b-6b54-46a6-837b-daea848ce1de;teste12;andrews;dagsad
+ba92e76f-e5e6-4498-b7b3-8618f1763b30;teste12;andrews;g
+e026e1e8-55e0-425d-b90f-7e9d32893b1c;teste12;andrews;sagha
+488f977e-b35f-40ec-8062-5593e64f942c;teste12;andrews;sdf
+b4d29fec-a70c-4868-8033-1ebe31a31938;teste12;andrews;a

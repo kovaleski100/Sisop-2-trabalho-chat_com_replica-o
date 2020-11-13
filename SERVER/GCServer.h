@@ -21,6 +21,7 @@ using namespace std;
 struct Dispositivo
 {
 	int socket;
+	string resv_port;	// porta "reservada" para caso main caia(apenas uma vez)
 	string username;
 };
 
@@ -57,6 +58,8 @@ private:
 	int election_id;
 	void handle_election(int id_previous);
 	mutable shared_timed_mutex election_mutex;
+	void att_socket(string group,string user, string port); //atualiza socket no mapa e inicia listen_app
+	void recn_apps(); //reconecta aos apps 
 
 public:
 	GCServer(GGServer *ggs_, int port);

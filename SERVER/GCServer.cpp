@@ -103,16 +103,19 @@ void GCServer::register_new_connection(int newsocket)
 	if (type == "app")
 	{
 		cout << "Registrando novo app" << endl;
-		//  app/grupo/usuario
+		//  app/grupo/usuario/porta
 		string group = buff.substr(0, buff.find(delimiter));
 		buff.erase(0, buff.find(delimiter) + delimiter.length());
 
-		string user = buff; //pega o resto
+		string user =  buff.substr(0, buff.find(delimiter));
+		buff.erase(0, buff.find(delimiter) + delimiter.length());
+		string port = buff;
 		Dispositivo device;
 		device.socket = newsocket;
 		device.username = user;
+		device.resv_port = port;
 		group_map[group].push_back(device);
-		send_all_backups("app/" + group + "/" + user);
+		send_all_backups("app/" + group + "/" + user + "/" + port);
 
 		thread t(&GCServer::listen_app, this, newsocket);
 		t.detach();
@@ -207,6 +210,8 @@ int GCServer::create_socket(int port)
 
 	return sockfd;
 }
+
+
 
 void GCServer::handle_new_conections(int sockfd)
 {
@@ -337,6 +342,49 @@ void GCServer::listen_main_server()
 	}
 	close(main_socket);
 	start_election();
+	
+	if(main_replica == true){
+		
+		recn_apps();
+	}
+}
+
+void GCServer::recn_apps(){
+		std::map<std::string, std::vector<Dispositivo>>::iterator it;
+		int j;
+		for (it = group_map.begin(); it != group_map.end(); ++it) {
+			for(j = 0; j < it->second.size(); j++){
+				cout<< it->second[j].resv_port<<endl;
+				thread t(&GCServer::att_socket,this ,it->first ,it->second[j].username,it->second[j].resv_port);
+				t.detach();
+			}
+			
+		}
+		
+		
+}
+
+void GCServer::att_socket(string group,string user, string port){
+	
+	std::map<std::string, std::vector<Dispositivo>>::iterator it;
+	int newsocket = connect_to_port("127.0.0.1",stoi(port));
+	int j =0;
+	
+	it = group_map.find(group);
+	
+	//it->second[0].socket = newsocket;
+	for (auto i : it->second){
+		if(i.username == user){
+			cout<<"ACHOU"<<endl;
+			break;
+		}
+		j++;
+	}
+	it->second[j].socket = newsocket;
+	
+	listen_app(it->second[j].socket);
+	
+	return;
 }
 
 void GCServer::register_itself(int port)
@@ -356,14 +404,17 @@ void GCServer::backup_register_app(string app_info)
 	string delimiter = "/";
 	// erase "app/"
 	app_info.erase(0, app_info.find(delimiter) + delimiter.length());
-
-	string group = app_info.substr(0, app_info.find(delimiter));
-	app_info.erase(0, app_info.find(delimiter) + delimiter.length());
-	string user = app_info; //pega o resto
-	Dispositivo device;
-	device.socket = 0;
-	device.username = user;
-	group_map[group].push_back(device);
+	
+		string group = app_info.substr(0, app_info.find(delimiter));
+		app_info.erase(0, app_info.find(delimiter) + delimiter.length());
+		string user =  app_info.substr(0, app_info.find(delimiter));
+		app_info.erase(0, app_info.find(delimiter) + delimiter.length());
+		string port = app_info;
+		Dispositivo device;
+		//device.socket = newsocket;
+		device.username = user;
+		device.resv_port = port;
+		group_map[group].push_back(device);
 }
 
 void GCServer::start_election()
