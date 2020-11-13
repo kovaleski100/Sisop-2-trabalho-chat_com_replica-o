@@ -345,7 +345,7 @@ void GCServer::listen_main_server()
 	
 	if(main_replica == true){
 		
-		recn_apps();
+		
 	}
 }
 
@@ -430,6 +430,7 @@ void GCServer::start_election()
 	if(next_port_ring_election == 0){
 		cout << "Sou o unico backup, sou o lider agora!" << endl;
 		main_replica = true;
+		recn_apps();
 		return;
 	}
 	participant = true;
@@ -492,5 +493,6 @@ void GCServer::handle_election(int id_previous)
 		if (n <= 0)
 			printf("ERROR writing to socket backup on election repassing my id");
 		close(sock);
+		recn_apps();
 	}
 }
