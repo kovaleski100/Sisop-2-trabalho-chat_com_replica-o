@@ -2,11 +2,15 @@
 
 GCClient::GCClient(string server_adress, int port, string user, string group)
 {
+    int app_socket = create_socket();
+    thread t1(&GCClient::handle_new_main_servers_conections, this, app_socket);
+    t1.detach();
+
     connect_server(server_adress, port);
     register_itself(user, group);
     /* read from the socket */
-    thread t(&GCClient::listen_server, this);
-    t.detach();
+    thread t2(&GCClient::listen_server, this);
+    t2.detach();
 }
 
 GCClient::~GCClient()
@@ -51,8 +55,10 @@ void GCClient::connect_server(string server_adress, int port)
     server_socket = sockfd;
 }
 
-void GCClient::register_itself(string user, string group){
-    string texto = "app/" + group + "/" + user;
+void GCClient::register_itself(string user, string group)
+{
+    string port = to_string(client_port);
+    string texto = "app/" + group + "/" + user + "/" + port;
     /* write in the socket */
     const char *buff = texto.c_str();
     int size = strlen(buff);
@@ -60,7 +66,6 @@ void GCClient::register_itself(string user, string group){
     if (n <= 0)
         printf("ERROR writing to socket\n");
 }
-
 
 void GCClient::listen_server()
 {
@@ -76,7 +81,6 @@ void GCClient::listen_server()
         gmc->DisplayMessage(m1);
         bzero(buffer, 256);
     }
-    close(server_socket);
 }
 
 Mensagem GCClient::build_Mensagem(char *buffer)
@@ -109,4 +113,50 @@ void GCClient::Send_server(Mensagem mensagem)
     int n = write(server_socket, buff, size);
     if (n <= 0)
         printf("ERROR writing to socket\n");
+}
+
+int GCClient::create_socket()
+{
+    int sockfd;
+    struct sockaddr_in serv_addr;
+    socklen_t addrlen = sizeof(serv_addr);
+
+    if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < -1)
+        printf("ERROR opening socket");
+
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(0);
+    serv_addr.sin_addr.s_addr = INADDR_ANY;
+    bzero(&(serv_addr.sin_zero), 8);
+
+    if (bind(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
+        printf("ERROR on binding");
+
+    getsockname(sockfd, (struct sockaddr *)&serv_addr, &addrlen);
+    client_port = ntohs(serv_addr.sin_port);
+
+    listen(sockfd, 5);
+
+    return sockfd;
+}
+
+// espera backups que se tornaram replicas primarias pra reestabelecer conexao
+void GCClient::handle_new_main_servers_conections(int sockfd)
+{
+    int newsockfd;
+    socklen_t clilen;
+    clilen = sizeof(struct sockaddr_in);
+    struct sockaddr_in cli_addr;
+
+    while (1)
+    {
+        if ((newsockfd = accept(sockfd, (struct sockaddr *)&cli_addr, &clilen)) == -1)
+            printf("ERROR on accept");
+
+        server_socket = newsockfd;
+        thread t(&GCClient::listen_server, this);
+        t.detach();
+    }
+    close(sockfd);
+    return;
 }

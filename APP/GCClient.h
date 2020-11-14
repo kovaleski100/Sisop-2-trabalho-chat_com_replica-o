@@ -19,11 +19,14 @@ class GCClient
 {
 private:
     int server_socket;
+    int client_port;
     GMClient *gmc;
     void connect_server(string server_adress, int port);
     void register_itself(string user, string group);
     void listen_server();
     Mensagem build_Mensagem(char *buffer);
+    int create_socket();
+    void handle_new_main_servers_conections(int port);
 
 public:
     GCClient(string server_adress, int port, string user, string group);
