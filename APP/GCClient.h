@@ -19,20 +19,14 @@ class GCClient
 {
 private:
     int server_socket;
-	int port_n;
-	int other_port;	//nova porta "reservada"
-	string ip;
-	string user_n;
-	string group_n;
+    int client_port;
     GMClient *gmc;
     void connect_server(string server_adress, int port);
     void register_itself(string user, string group);
     void listen_server();
-	int	resv_port(); // "reserva" uma porta para ser usada caso perda de conexao
     Mensagem build_Mensagem(char *buffer);
-	void handle_new_conections(int port);
-	int create_socket(int port);
-	void conection();
+    int create_socket();
+    void handle_new_main_servers_conections(int port);
 
 public:
     GCClient(string server_adress, int port, string user, string group);
