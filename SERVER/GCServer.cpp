@@ -167,20 +167,20 @@ void GCServer::register_new_connection(int newsocket)
 		device.socket = newsocket;
 		device.username = user;
 		device.app_reconnection_port = port;
-		cout<<"COMECO"<<endl;
-		unique_lock<shared_timed_mutex> lock(group_map_mutex, defer_lock);
+		
+		unique_lock<shared_timed_mutex> lock(group_map_mutex, defer_lock);		
 		lock.lock();
-		if(group_map.find(group) == group_map.end()){
-			cout<<"GRUPO NOVO"<< endl;
+		std::map<std::string, std::vector<Dispositivo>>::iterator it;
+		it = group_map.find(group);
+		if(it == group_map.end()){												//chega se grupo nao existe
 			group_map[group].push_back(device);
 			lock.unlock();
 		}
 		
 		else{
-			cout<<"GRUPO EXISTENTE"<< endl;
 			group_map[group].push_back(device);
 			lock.unlock();
-			send_last_messages(ggs->ReadMessage(group),user);
+			send_last_messages(ggs->ReadMessage(group),user,it);
 		}
 		
 		const string tmp = boost::lexical_cast<string>(device.uuid);
@@ -398,12 +398,10 @@ void GCServer::send_all_backups(string text)
 	}
 }
 
-void GCServer::send_last_messages(vector<Mensagem> last_messages,string user)
+void GCServer::send_last_messages(vector<Mensagem> last_messages,string user,std::map<std::string, std::vector<Dispositivo>>::iterator it )
 {
-	std::map<std::string, std::vector<Dispositivo>>::iterator it;
 	
 	shared_lock<shared_timed_mutex> lock2(group_map_mutex);
-	it = group_map.find(last_messages[0].grupo);
 
 	for(auto i : it->second)
 	{
