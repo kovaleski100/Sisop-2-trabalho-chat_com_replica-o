@@ -27,7 +27,8 @@ Mensagem GCServer::build_Mensagem(char *buffer)
 	string user = buff.substr(0, buff.find(delimiter));
 	buff.erase(0, buff.find(delimiter) + delimiter.length());
 
-	string text = buff; //pega o resto
+	string text = buff.substr(0, buff.find(delimiter));
+	buff.erase(0, buff.find(delimiter) + delimiter.length());
 
 	Mensagem m1;
 	m1.grupo = grupo;
@@ -72,11 +73,19 @@ void GCServer::register_new_backup(int socket, int port)
 	string text;
 	// send new next to the previous last on the list
 	text = "next/" + to_string(port);
+	while (text.length() < 256)
+	{
+		text += "/";
+	}
 	int n = write(backup_vector[backup_vector.size() - 2].socket, text.c_str(), strlen(text.c_str()));
 	if (n <= 0)
 		printf("ERROR writing to socket backup 1\n");
 	// send new next to the new backup
 	text = "next/" + to_string(backup_vector[0].port);
+	while (text.length() < 256)
+	{
+		text += "/";
+	}
 	n = write(socket, text.c_str(), strlen(text.c_str()));
 	if (n <= 0)
 		printf("ERROR writing to socket backup 2\n");
@@ -154,7 +163,13 @@ void GCServer::register_new_connection(int newsocket)
 		device.username = user;
 		device.app_reconnection_port = port;
 		group_map[group].push_back(device);
-		send_all_backups("app/" + group + "/" + user + "/" + port);
+		const string tmp = boost::lexical_cast<string>(device.uuid);
+		string text = "app/" + group + "/" + user + "/" + port + "/" + tmp;
+		while (text.length() < 256)
+		{
+			text += "/";
+		}
+		send_all_backups(text);
 
 		thread t(&GCServer::listen_app, this, newsocket, device.uuid, group);
 		t.detach();
@@ -169,31 +184,36 @@ void GCServer::register_new_connection(int newsocket)
 
 		for (it = group_map.begin(); it != group_map.end(); it++)
 		{
-			for(auto& disp: it->second)
+			for (auto &disp : it->second)
 			{
 				disp.username;
 				disp.app_reconnection_port;
+				string tmp = boost::lexical_cast<string>(disp.uuid);
+				string M = "app/" + it->first + "/" + disp.username + "/" + disp.app_reconnection_port + "/" + tmp;
+				while (M.length() < 256)
+				{
+					M += "/";
+				}
 
-				string M = "app/" + it->first + "/" + disp.username + "/" + disp.app_reconnection_port;
-
-				int n = write(newsocket, M.c_str(), strlen(M.c_str());
+				int n = write(newsocket, M.c_str(), strlen(M.c_str()));
 				if (n <= 0)
-					printf("ERROR writing to transfer apps to backup\n";
+					printf("ERROR writing to transfer apps to backup\n");
 			}
 			vector<Mensagem> lastM = ggs->ReadMessage(it->first);
 
-			for(auto& message : lastM)
+			for (auto &message : lastM)
 			{
 				string text = message.grupo + "/" + message.usuario + "/" + message.texto;
+				while (text.length() < 256)
+				{
+					text += "/";
+				}
 
-				int n = write(newsocket, text.c_str(), text(M.c_str());
+				int n = write(newsocket, text.c_str(), strlen(text.c_str()));
 				if (n <= 0)
-					printf("ERROR writing to transfer message to backup\n";
-
+					printf("ERROR writing to transfer message to backup\n");
 			}
-			
 		}
-			
 	}
 	else if (type == "election")
 	{
@@ -263,12 +283,22 @@ void GCServer::listen_app(int newsockfd, boost::uuids::uuid uuid, string group)
 void GCServer::remove_device(boost::uuids::uuid uuid, string group)
 {
 	// remove the device from the group that matches the uuid
-	cout << "Device desconectado" << endl;
 	group_map[group].erase(
 		std::remove_if(group_map[group].begin(), group_map[group].end(), [&](Dispositivo const &disp) {
-			return disp.uuid == uuid;
+			if (disp.uuid == uuid)
+			{
+				cout << "Device desconectado" << endl;
+				return true;
+			}
+			return false;
 		}),
 		group_map[group].end());
+
+	if (main_replica)
+	{
+		string tmp = boost::lexical_cast<string>(uuid);
+		send_all_backups("kill/" + group + "/" + tmp);
+	}
 }
 
 int GCServer::create_socket(int port)
@@ -401,11 +431,13 @@ void GCServer::listen_main_server()
 		string type = buff.substr(0, buff.find(delimiter));
 		if (type == "app")
 		{
+			// app/group/user/port/uuid
 			cout << "Registrando novo app - backup" << endl;
 			backup_register_app(buff);
 		}
 		else if (type == "next")
 		{
+			// next/port
 			// Proximo backup a direita no anel das eleicoes
 			cout << "Novo backup a direita - backup" << endl;
 			// erase "next/"
@@ -413,6 +445,19 @@ void GCServer::listen_main_server()
 
 			string next_port = buff.substr(0, buff.find(delimiter));
 			next_port_ring_election = stoi(next_port);
+		}
+		else if (type == "kill")
+		{
+			// kill/group/uuid
+			// erase "kill/"
+			buff.erase(0, buff.find(delimiter) + delimiter.length());
+			// get rest
+			string group = buff.substr(0, buff.find(delimiter));
+			buff.erase(0, buff.find(delimiter) + delimiter.length());
+			string tmp = buff.substr(0, buff.find(delimiter));
+			boost::uuids::string_generator gen;
+			boost::uuids::uuid uuid = gen(tmp);
+			remove_device(uuid, group);
 		}
 		else
 		{
@@ -439,7 +484,7 @@ void GCServer::register_itself(int port)
 
 void GCServer::backup_register_app(string app_info)
 {
-	//  app/grupo/usuario
+	//  app/grupo/usuario/uuid
 	string delimiter = "/";
 	// erase "app/"
 	app_info.erase(0, app_info.find(delimiter) + delimiter.length());
@@ -448,10 +493,14 @@ void GCServer::backup_register_app(string app_info)
 	app_info.erase(0, app_info.find(delimiter) + delimiter.length());
 	string user = app_info.substr(0, app_info.find(delimiter));
 	app_info.erase(0, app_info.find(delimiter) + delimiter.length());
-	string port = app_info;
+	string port = app_info.substr(0, app_info.find(delimiter));
+	app_info.erase(0, app_info.find(delimiter) + delimiter.length());
+	string uuid = app_info.substr(0, app_info.find(delimiter));
 	Dispositivo device;
 	device.username = user;
 	device.app_reconnection_port = port;
+	boost::uuids::string_generator gen;
+	device.uuid = gen(uuid);
 	group_map[group].push_back(device);
 }
 
