@@ -125,6 +125,36 @@ void GCServer::register_new_connection(int newsocket)
 		// backup/port
 		string backup_port = buff;
 		register_new_backup(newsocket, stoi(backup_port));
+
+		std::map<std::string, std::vector<Dispositivo>>::iterator it;
+
+		for (it = group_map.begin(); it != group_map.end(); it++)
+		{
+			for(auto& disp: it->second)
+			{
+				disp.username;
+				disp.app_reconnection_port;
+
+				string M = "app/" + it->first + "/" + disp.username + "/" + disp.app_reconnection_port;
+
+				int n = write(newsocket, M.c_str(), strlen(M.c_str());
+				if (n <= 0)
+					printf("ERROR writing to transfer apps to backup\n";
+			}
+			vector<Mensagem> lastM = ggs->ReadMessage(it->first);
+
+			for(auto& message : lastM)
+			{
+				string text = message.grupo + "/" + message.usuario + "/" + message.texto;
+
+				int n = write(newsocket, text.c_str(), text(M.c_str());
+				if (n <= 0)
+					printf("ERROR writing to transfer message to backup\n";
+
+			}
+			
+		}
+			
 	}
 	else if (type == "election")
 	{
