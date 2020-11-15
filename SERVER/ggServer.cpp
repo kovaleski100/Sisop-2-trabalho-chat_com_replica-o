@@ -1,5 +1,6 @@
 #include "ggServer.h"
 #include "gmServer.h"
+#define		N		5
 
 vector<Mensagem> GGServer::ReadMessage(string group)
 {

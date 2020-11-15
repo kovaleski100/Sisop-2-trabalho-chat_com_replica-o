@@ -63,6 +63,7 @@ private:
 	void register_new_backup(int socket, int port);
 	void send_all_backups(string text);
 	bool kill_app_if_to_many_devices(string username, int socket);
+	void send_last_messages(vector<Mensagem> last_messages, string user);
 	//backup ------
 	int connect_to_port(string server_adress, int port);
 	void listen_main_server();

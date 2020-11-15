@@ -167,10 +167,22 @@ void GCServer::register_new_connection(int newsocket)
 		device.socket = newsocket;
 		device.username = user;
 		device.app_reconnection_port = port;
+		cout<<"COMECO"<<endl;
 		unique_lock<shared_timed_mutex> lock(group_map_mutex, defer_lock);
 		lock.lock();
-		group_map[group].push_back(device);
-		lock.unlock();
+		if(group_map.find(group) == group_map.end()){
+			cout<<"GRUPO NOVO"<< endl;
+			group_map[group].push_back(device);
+			lock.unlock();
+		}
+		
+		else{
+			cout<<"GRUPO EXISTENTE"<< endl;
+			group_map[group].push_back(device);
+			lock.unlock();
+			send_last_messages(ggs->ReadMessage(group),user);
+		}
+		
 		const string tmp = boost::lexical_cast<string>(device.uuid);
 		string text = "app/" + group + "/" + user + "/" + port + "/" + tmp;
 		while (text.length() < 256)
@@ -178,9 +190,10 @@ void GCServer::register_new_connection(int newsocket)
 			text += "/";
 		}
 		send_all_backups(text);
-
 		thread t(&GCServer::listen_app, this, newsocket, device.uuid, group);
 		t.detach();
+		return;
+		
 	}
 	else if (type == "backup")
 	{
@@ -383,6 +396,38 @@ void GCServer::send_all_backups(string text)
 		if (n <= 0)
 			printf("ERROR writing to socket backup\n");
 	}
+}
+
+void GCServer::send_last_messages(vector<Mensagem> last_messages,string user)
+{
+	std::map<std::string, std::vector<Dispositivo>>::iterator it;
+	
+	shared_lock<shared_timed_mutex> lock2(group_map_mutex);
+	it = group_map.find(last_messages[0].grupo);
+
+	for(auto i : it->second)
+	{
+		if(i.username == user)
+		{
+			for(auto j : last_messages)
+			{
+				string text = j.grupo + "/" + j.usuario + "/" + j.texto + "§";
+					
+				while (text.length() < 256)
+				{
+					text += "";
+				}
+				
+				int n = write(i.socket, text.c_str(), strlen(text.c_str()));
+				if (n <= 0)
+					printf("ERROR writing to socket app\n");
+			}
+			break;
+		}
+	
+		
+	}
+	return;
 }
 
 // Backup replica ----------------

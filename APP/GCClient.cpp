@@ -102,6 +102,7 @@ Mensagem GCClient::build_Mensagem(char *buffer)
 {
     string buff(buffer);
     string delimiter = "/";
+	string filler = "§";
 
     string grupo = buff.substr(0, buff.find(delimiter));
     buff.erase(0, buff.find(delimiter) + delimiter.length());
@@ -109,7 +110,7 @@ Mensagem GCClient::build_Mensagem(char *buffer)
     string user = buff.substr(0, buff.find(delimiter));
     buff.erase(0, buff.find(delimiter) + delimiter.length());
 
-    string text = buff; //pega o resto
+    string text = buff.substr(0,buff.find(filler)); //pega o resto
 
     Mensagem m1;
     m1.grupo = grupo;
