@@ -40,7 +40,7 @@ Mensagem GCServer::build_Mensagem(char *buffer)
 
 void GCServer::Send_all(Mensagem message)
 {
-
+	shared_lock<shared_timed_mutex> lock1(main_replica_mutex);
 	if (!main_replica)
 		return;
 
@@ -49,6 +49,7 @@ void GCServer::Send_all(Mensagem message)
 
 	std::map<std::string, std::vector<Dispositivo>>::iterator it;
 
+	shared_lock<shared_timed_mutex> lock2(group_map_mutex);
 	it = group_map.find(message.grupo);
 
 	for (auto i : it->second)
@@ -66,6 +67,7 @@ void GCServer::register_new_backup(int socket, int port)
 	Backup new_backup;
 	new_backup.socket = socket;
 	new_backup.port = port;
+	unique_lock<shared_timed_mutex> lock(backup_vector_mutex);
 	backup_vector.push_back(new_backup);
 	if (backup_vector.size() == 1)
 		return;
@@ -95,6 +97,8 @@ bool GCServer::kill_app_if_to_many_devices(string username, int socket)
 {
 	int num_devices = 0;
 	std::map<std::string, std::vector<Dispositivo>>::iterator it;
+	shared_lock<shared_timed_mutex> lock(group_map_mutex, defer_lock);
+	lock.lock();
 	for (it = group_map.begin(); it != group_map.end(); it++)
 	{
 		for (auto &disp : it->second)
@@ -110,6 +114,7 @@ bool GCServer::kill_app_if_to_many_devices(string username, int socket)
 			break;
 		}
 	}
+	lock.unlock();
 	if (num_devices >= 2)
 	{
 		// kill new app
@@ -162,7 +167,10 @@ void GCServer::register_new_connection(int newsocket)
 		device.socket = newsocket;
 		device.username = user;
 		device.app_reconnection_port = port;
+		unique_lock<shared_timed_mutex> lock(group_map_mutex, defer_lock);
+		lock.lock();
 		group_map[group].push_back(device);
+		lock.unlock();
 		const string tmp = boost::lexical_cast<string>(device.uuid);
 		string text = "app/" + group + "/" + user + "/" + port + "/" + tmp;
 		while (text.length() < 256)
@@ -182,6 +190,8 @@ void GCServer::register_new_connection(int newsocket)
 
 		std::map<std::string, std::vector<Dispositivo>>::iterator it;
 
+		shared_lock<shared_timed_mutex> lock(group_map_mutex, defer_lock);
+		lock.lock();
 		for (it = group_map.begin(); it != group_map.end(); it++)
 		{
 			for (auto &disp : it->second)
@@ -214,6 +224,7 @@ void GCServer::register_new_connection(int newsocket)
 					printf("ERROR writing to transfer message to backup\n");
 			}
 		}
+		lock.unlock();
 	}
 	else if (type == "election")
 	{
@@ -225,13 +236,16 @@ void GCServer::register_new_connection(int newsocket)
 	else if (type == "elected")
 	{
 		// elected/port
+		shared_lock<shared_timed_mutex> lock1(main_replica_mutex);
 		if (main_replica)
 			return;
 
 		cout << "Novo lider eleito! Repassando as boas novas!" << endl;
 		string new_main_port = buff;
-
+		shared_lock<shared_timed_mutex> lock4(next_port_ring_mutex, defer_lock);
+		lock4.lock();
 		int sock = connect_to_port("127.0.0.1", next_port_ring_election);
+		lock4.unlock();
 		if (sock == -1)
 			return;
 		string text = "elected/" + new_main_port;
@@ -239,14 +253,24 @@ void GCServer::register_new_connection(int newsocket)
 		if (n <= 0)
 			printf("ERROR writing to socket backup on election repassing elected\n");
 		close(sock);
+		unique_lock<shared_timed_mutex> lock2(election_mutex);
+		lock2.lock();
 		participant = false;
-
+		lock2.unlock();
+		unique_lock<shared_timed_mutex> lock5(next_port_ring_mutex, defer_lock);
+		lock5.lock();
 		next_port_ring_election = 0;
+		lock5.unlock();
 		cout << "Conectando com novo lider!" << endl;
 		sock = connect_to_port("127.0.0.1", stoi(new_main_port));
 		if (sock == -1)
 			return;
+
+		unique_lock<shared_timed_mutex> lock3(main_socket_mutex, defer_lock);
+		lock3.lock();
 		main_socket = sock;
+		lock3.unlock();
+
 		register_itself(self_port);
 		thread t2(&GCServer::listen_main_server, this);
 		t2.detach();
@@ -283,6 +307,8 @@ void GCServer::listen_app(int newsockfd, boost::uuids::uuid uuid, string group)
 void GCServer::remove_device(boost::uuids::uuid uuid, string group)
 {
 	// remove the device from the group that matches the uuid
+	unique_lock<shared_timed_mutex> lock1(group_map_mutex, defer_lock);
+	lock1.lock();
 	group_map[group].erase(
 		std::remove_if(group_map[group].begin(), group_map[group].end(), [&](Dispositivo const &disp) {
 			if (disp.uuid == uuid)
@@ -293,7 +319,9 @@ void GCServer::remove_device(boost::uuids::uuid uuid, string group)
 			return false;
 		}),
 		group_map[group].end());
+	lock1.unlock();
 
+	shared_lock<shared_timed_mutex> lock2(main_replica_mutex);
 	if (main_replica)
 	{
 		string tmp = boost::lexical_cast<string>(uuid);
@@ -343,7 +371,7 @@ void GCServer::handle_new_conections(int sockfd)
 
 void GCServer::send_all_backups(string text)
 {
-
+	shared_lock<shared_timed_mutex> lock(backup_vector_mutex);
 	for (auto const &x : backup_vector)
 	{
 		int backup_socket = x.socket;
@@ -421,7 +449,10 @@ void GCServer::listen_main_server()
 	bzero(buffer, 256);
 	while (1)
 	{
+		shared_lock<shared_timed_mutex> lock(main_socket_mutex, defer_lock);
+		lock.lock();
 		n = read(main_socket, buffer, 256);
+		lock.unlock();
 		if (n <= 0)
 			break;
 
@@ -444,7 +475,10 @@ void GCServer::listen_main_server()
 			buff.erase(0, buff.find(delimiter) + delimiter.length());
 
 			string next_port = buff.substr(0, buff.find(delimiter));
+			unique_lock<shared_timed_mutex> lock(next_port_ring_mutex, defer_lock);
+			lock.lock();
 			next_port_ring_election = stoi(next_port);
+			lock.unlock();
 		}
 		else if (type == "kill")
 		{
@@ -467,7 +501,10 @@ void GCServer::listen_main_server()
 		}
 		bzero(buffer, 256);
 	}
+	shared_lock<shared_timed_mutex> lock(main_socket_mutex, defer_lock);
+	lock.lock();
 	close(main_socket);
+	lock.unlock();
 	start_election();
 }
 
@@ -477,6 +514,7 @@ void GCServer::register_itself(int port)
 	/* write in the socket */
 	const char *buff = texto.c_str();
 	int size = strlen(buff);
+	shared_lock<shared_timed_mutex> lock(main_socket_mutex);
 	int n = write(main_socket, buff, size);
 	if (n <= 0)
 		printf("ERROR writing to socket\n");
@@ -501,12 +539,13 @@ void GCServer::backup_register_app(string app_info)
 	device.app_reconnection_port = port;
 	boost::uuids::string_generator gen;
 	device.uuid = gen(uuid);
+	unique_lock<shared_timed_mutex> lock(group_map_mutex);
 	group_map[group].push_back(device);
 }
 
 void GCServer::start_election()
 {
-	unique_lock<shared_timed_mutex> lock(election_mutex);
+	unique_lock<shared_timed_mutex> lock1(election_mutex);
 	if (participant == true)
 	{
 		// ja participei
@@ -514,9 +553,11 @@ void GCServer::start_election()
 	}
 
 	cout << "Iniciei a eleicao!" << endl;
+	shared_lock<shared_timed_mutex> lock(next_port_ring_mutex);
 	if (next_port_ring_election == 0)
 	{
 		cout << "Sou o unico backup, sou o lider agora!" << endl;
+		unique_lock<shared_timed_mutex> lock2(main_replica_mutex);
 		main_replica = true;
 		reconnect_to_all_apps();
 		return;
@@ -540,6 +581,8 @@ void GCServer::handle_election(int id_previous)
 	{
 		// repassa o id do anterior
 		cout << "Repassando o id anterior" << endl;
+		shared_lock<shared_timed_mutex> lock(next_port_ring_mutex);
+
 		int sock = connect_to_port("127.0.0.1", next_port_ring_election);
 		if (sock == -1)
 			return;
@@ -556,6 +599,8 @@ void GCServer::handle_election(int id_previous)
 		{
 			// repassando o meu id
 			cout << "Repassando o meu id" << endl;
+			shared_lock<shared_timed_mutex> lock(next_port_ring_mutex);
+
 			int sock = connect_to_port("127.0.0.1", next_port_ring_election);
 			if (sock == -1)
 				return;
@@ -573,6 +618,8 @@ void GCServer::handle_election(int id_previous)
 		// mando um "elected" com minha porta
 		cout << "Fui eleito!" << endl;
 		main_replica = true;
+		shared_lock<shared_timed_mutex> lock(next_port_ring_mutex);
+
 		int sock = connect_to_port("127.0.0.1", next_port_ring_election);
 		if (sock == -1)
 			return;
@@ -589,6 +636,7 @@ void GCServer::reconnect_to_all_apps()
 {
 	cout << "Reconnecting to all apps" << endl;
 	std::map<std::string, std::vector<Dispositivo>>::iterator it;
+	unique_lock<shared_timed_mutex> lock(group_map_mutex);
 	for (it = group_map.begin(); it != group_map.end(); it++)
 	{
 		for (auto &disp : it->second)

@@ -44,11 +44,15 @@ struct Backup
 class GCServer
 {
 private:
+	mutable shared_timed_mutex group_map_mutex;
 	std::map<std::string, std::vector<Dispositivo>> group_map;
 	GGServer *ggs;
+	mutable shared_timed_mutex main_socket_mutex;
 	int main_socket;
 	int self_port;
+	mutable shared_timed_mutex backup_vector_mutex;
 	std::vector<Backup> backup_vector;
+	mutable shared_timed_mutex main_replica_mutex;
 	bool main_replica;
 	Mensagem build_Mensagem(char *buffer);
 	void listen_app(int newsockfd, boost::uuids::uuid uuid, string group);
@@ -64,12 +68,13 @@ private:
 	void listen_main_server();
 	void register_itself(int port);
 	void backup_register_app(string app_info);
+	mutable shared_timed_mutex next_port_ring_mutex;
 	int next_port_ring_election;
 	void start_election();
+	mutable shared_timed_mutex election_mutex;
 	bool participant;
 	int election_id;
 	void handle_election(int id_previous);
-	mutable shared_timed_mutex election_mutex;
 	void reconnect_to_all_apps(); //reconecta aos apps
 
 public:
