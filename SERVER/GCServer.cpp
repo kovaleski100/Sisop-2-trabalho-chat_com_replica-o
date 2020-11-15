@@ -253,7 +253,7 @@ void GCServer::register_new_connection(int newsocket)
 		if (n <= 0)
 			printf("ERROR writing to socket backup on election repassing elected\n");
 		close(sock);
-		unique_lock<shared_timed_mutex> lock2(election_mutex);
+		unique_lock<shared_timed_mutex> lock2(election_mutex, defer_lock);
 		lock2.lock();
 		participant = false;
 		lock2.unlock();
@@ -261,6 +261,10 @@ void GCServer::register_new_connection(int newsocket)
 		lock5.lock();
 		next_port_ring_election = 0;
 		lock5.unlock();
+		unique_lock<shared_timed_mutex> lock6(group_map_mutex, defer_lock);
+		lock6.lock();
+		group_map.clear();
+		lock6.unlock();
 		cout << "Conectando com novo lider!" << endl;
 		sock = connect_to_port("127.0.0.1", stoi(new_main_port));
 		if (sock == -1)
