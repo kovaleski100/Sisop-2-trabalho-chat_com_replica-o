@@ -46,7 +46,6 @@ int main(int argc, char *argv[])
     //roda o app
     inte->Start();
 
-    delete inte;
-    delete gmc;
     delete gcc;
+    delete gmc;
 }

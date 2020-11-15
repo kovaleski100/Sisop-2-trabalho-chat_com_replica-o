@@ -2,12 +2,20 @@
 
 GCClient::GCClient(string server_adress, int port, string user, string group)
 {
+    server_adress_ = server_adress;
+    server_port = port;
+    user_ = user;
+    group_ = group;
+}
+
+void GCClient::Start()
+{
     int app_socket = create_socket();
     thread t1(&GCClient::handle_new_main_servers_conections, this, app_socket);
     t1.detach();
 
-    connect_server(server_adress, port);
-    register_itself(user, group);
+    connect_server(server_adress_, server_port);
+    register_itself(user_, group_);
     /* read from the socket */
     thread t2(&GCClient::listen_server, this);
     t2.detach();
@@ -77,6 +85,13 @@ void GCClient::listen_server()
         if (n <= 0)
             break;
 
+        string buff(buffer);
+        if (buff.length() == 5 && buff == "kill/")
+        {
+            delete gmc;
+            cout << "To many devices!" << endl;
+            exit(1);
+        }
         Mensagem m1 = build_Mensagem(buffer);
         gmc->DisplayMessage(m1);
         bzero(buffer, 256);

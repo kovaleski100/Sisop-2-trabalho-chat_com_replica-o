@@ -18,6 +18,10 @@ using namespace std;
 class GCClient
 {
 private:
+    string server_adress_;
+    int server_port;
+    string user_;
+    string group_;
     int server_socket;
     int client_port;
     GMClient *gmc;
@@ -31,6 +35,7 @@ private:
 public:
     GCClient(string server_adress, int port, string user, string group);
     ~GCClient();
+    void Start();
     void Send_server(Mensagem mensagem);
     void Set_gmc(GMClient *gmc_)
     {

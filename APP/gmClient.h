@@ -24,7 +24,8 @@ private:
 
 public:
     GMClient(GCClient *gcClient_, string user_, string group_);
-
+    ~GMClient();
+    void Start();
     bool SendMessage(string text);
     // essa função DisplayMessage vai ser chamada pelo GCClient
     // para mostrar a mensagem na interfarce.

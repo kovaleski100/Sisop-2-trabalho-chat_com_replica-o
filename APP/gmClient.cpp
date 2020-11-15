@@ -5,7 +5,15 @@ GMClient::GMClient(GCClient *gcClient_, string user_, string group_)
     user = user_;
     group = group_;
     gcClient = gcClient_;
-    gcClient_->Set_gmc(this);
+}
+GMClient::~GMClient(){
+    delete interface;
+}
+
+void GMClient::Start(){
+    gcClient->Set_gmc(this);
+    gcClient->Start();
+
 }
 
 Mensagem GMClient::buildMensagem(string text)

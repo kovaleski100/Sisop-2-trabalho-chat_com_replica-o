@@ -82,6 +82,38 @@ void GCServer::register_new_backup(int socket, int port)
 		printf("ERROR writing to socket backup 2\n");
 }
 
+bool GCServer::kill_app_if_to_many_devices(string username, int socket)
+{
+	int num_devices = 0;
+	std::map<std::string, std::vector<Dispositivo>>::iterator it;
+	for (it = group_map.begin(); it != group_map.end(); it++)
+	{
+		for (auto &disp : it->second)
+		{
+			if (disp.username == username)
+			{
+				num_devices++;
+			}
+		}
+		if (num_devices >= 2)
+		{
+			// ja possui dois dispositivos conectados, nao precisa procurar mais
+			break;
+		}
+	}
+	if (num_devices >= 2)
+	{
+		// kill new app
+		string text = "kill/";
+		int n = write(socket, text.c_str(), strlen(text.c_str()));
+		if (n <= 0)
+			printf("ERROR writing to socket app to kill it\n");
+		return true;
+	}
+
+	return false;
+}
+
 void GCServer::register_new_connection(int newsocket)
 {
 	int n;
@@ -110,6 +142,13 @@ void GCServer::register_new_connection(int newsocket)
 		string user = buff.substr(0, buff.find(delimiter));
 		buff.erase(0, buff.find(delimiter) + delimiter.length());
 		string port = buff;
+		if (kill_app_if_to_many_devices(user, newsocket))
+		{
+			close(newsocket);
+			cout << "To many devices per user, killing it!" << endl;
+			return;
+		}
+
 		Dispositivo device;
 		device.socket = newsocket;
 		device.username = user;
@@ -117,7 +156,7 @@ void GCServer::register_new_connection(int newsocket)
 		group_map[group].push_back(device);
 		send_all_backups("app/" + group + "/" + user + "/" + port);
 
-		thread t(&GCServer::listen_app, this, newsocket);
+		thread t(&GCServer::listen_app, this, newsocket, device.uuid, group);
 		t.detach();
 	}
 	else if (type == "backup")
@@ -199,7 +238,7 @@ void GCServer::register_new_connection(int newsocket)
 	}
 }
 
-void GCServer::listen_app(int newsockfd)
+void GCServer::listen_app(int newsockfd, boost::uuids::uuid uuid, string group)
 {
 	int n;
 	char buffer[256];
@@ -217,6 +256,19 @@ void GCServer::listen_app(int newsockfd)
 		bzero(buffer, 256);
 	}
 	close(newsockfd);
+
+	remove_device(uuid, group);
+}
+
+void GCServer::remove_device(boost::uuids::uuid uuid, string group)
+{
+	// remove the device from the group that matches the uuid
+	cout << "Device desconectado" << endl;
+	group_map[group].erase(
+		std::remove_if(group_map[group].begin(), group_map[group].end(), [&](Dispositivo const &disp) {
+			return disp.uuid == uuid;
+		}),
+		group_map[group].end());
 }
 
 int GCServer::create_socket(int port)
@@ -398,7 +450,6 @@ void GCServer::backup_register_app(string app_info)
 	app_info.erase(0, app_info.find(delimiter) + delimiter.length());
 	string port = app_info;
 	Dispositivo device;
-	//device.socket = newsocket;
 	device.username = user;
 	device.app_reconnection_port = port;
 	group_map[group].push_back(device);
@@ -491,15 +542,16 @@ void GCServer::reconnect_to_all_apps()
 	std::map<std::string, std::vector<Dispositivo>>::iterator it;
 	for (it = group_map.begin(); it != group_map.end(); it++)
 	{
-		for (auto& disp : it->second)
+		for (auto &disp : it->second)
 		{
 			int newsocket = connect_to_port("127.0.0.1", stoi(disp.app_reconnection_port));
-			if (newsocket == -1){
+			if (newsocket == -1)
+			{
 				cout << "error reconnecting to " << disp.username << " on port " << disp.app_reconnection_port << endl;
 				continue;
 			}
 			disp.socket = newsocket;
-			thread t(&GCServer::listen_app, this, newsocket);
+			thread t(&GCServer::listen_app, this, newsocket, disp.uuid, it->first);
 			t.detach();
 		}
 	}
