@@ -170,18 +170,9 @@ void GCServer::register_new_connection(int newsocket)
 		
 		unique_lock<shared_timed_mutex> lock(group_map_mutex, defer_lock);		
 		lock.lock();
-		std::map<std::string, std::vector<Dispositivo>>::iterator it;
-		it = group_map.find(group);
-		if(it == group_map.end()){												//chega se grupo nao existe
-			group_map[group].push_back(device);
-			lock.unlock();
-		}
-		
-		else{
-			group_map[group].push_back(device);
-			lock.unlock();
-			send_last_messages(ggs->ReadMessage(group),user,it);
-		}
+		group_map[group].push_back(device);
+		lock.unlock();
+		send_last_messages(ggs->ReadMessage(group),user,newsocket);
 		
 		const string tmp = boost::lexical_cast<string>(device.uuid);
 		string text = "app/" + group + "/" + user + "/" + port + "/" + tmp;
@@ -398,35 +389,24 @@ void GCServer::send_all_backups(string text)
 	}
 }
 
-void GCServer::send_last_messages(vector<Mensagem> last_messages,string user,std::map<std::string, std::vector<Dispositivo>>::iterator it )
+void GCServer::send_last_messages(vector<Mensagem> last_messages,string user,int socket )
 {
 	
-	shared_lock<shared_timed_mutex> lock2(group_map_mutex);
 
-	for(auto i : it->second)
-	{
-		if(i.username == user)
+	for(auto j : last_messages)
 		{
-			for(auto j : last_messages)
+			string text = j.grupo + "/" + j.usuario + "/" + j.texto + "§";
+			
+			while (text.length() < 256)
 			{
-				string text = j.grupo + "/" + j.usuario + "/" + j.texto + "§";
-					
-				while (text.length() < 256)
-				{
-					text += "";
-				}
-				
-				int n = write(i.socket, text.c_str(), strlen(text.c_str()));
-				if (n <= 0)
-					printf("ERROR writing to socket app\n");
+				text += "";
 			}
-			break;
+				
+			int n = write(socket, text.c_str(), strlen(text.c_str()));
+			if (n <= 0)
+				printf("ERROR writing to socket app\n");
 		}
-	
-		
 	}
-	return;
-}
 
 // Backup replica ----------------
 
