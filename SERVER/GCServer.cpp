@@ -45,6 +45,7 @@ void GCServer::Send_all(Mensagem message)
 		return;
 
 	string text = message.grupo + "/" + message.usuario + "/" + message.texto;
+	// envia nova mensagem para os backups primeiro
 	send_all_backups(text);
 
 	std::map<std::string, std::vector<Dispositivo>>::iterator it;
@@ -198,6 +199,7 @@ void GCServer::register_new_connection(int newsocket)
 		lock.lock();
 		for (it = group_map.begin(); it != group_map.end(); it++)
 		{
+			// envia apps conectados para o novo backup
 			for (auto &disp : it->second)
 			{
 				disp.username;
@@ -214,7 +216,7 @@ void GCServer::register_new_connection(int newsocket)
 					printf("ERROR writing to transfer apps to backup\n");
 			}
 			vector<Mensagem> lastM = ggs->ReadMessage(it->first);
-
+			// envia ultimas N mensagens de cada grupo
 			for (auto &message : lastM)
 			{
 				string text = message.grupo + "/" + message.usuario + "/" + message.texto;
